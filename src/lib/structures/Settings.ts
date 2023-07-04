@@ -20,39 +20,39 @@ export class Settings {
 		this.guildSettings = new Keyv(this.path, { namespace: 'guildSettings', adapter: 'sqlite' });
 	}
 
-	public async createGuildSetting(guildId: string): Promise<GuildSettings> {
-		return this.setGuildSetting(guildId);
+	public async createGuildSetting(guildId: string): Promise<Boolean> {
+		return this.guildSettings.set(guildId, {});
 	}
 
-	public async createUserSetting(userId: string): Promise<UserSettings> {
-		return this.setUserSetting(userId);
+	public async createUserSetting(userId: string): Promise<Boolean> {
+		return this.userSettings.set(userId, {});
 	}
 
 	public async getGuildSetting(guildId: string): Promise<GuildSettings> {
 		const guildSettings = (await this.guildSettings.get(guildId)) ?? (await this.createGuildSetting(guildId));
-		const settings = mergeDefault(defaultGuildSettings, guildSettings);
-        return settings;
+		return mergeDefault(defaultGuildSettings, guildSettings);
 	}
 
 	public async setGuildSetting(guildId: string, data: GuildSettings = {}): Promise<GuildSettings> {
 		if (typeof data !== 'object') throw new Error('Data must be an object');
-		await this.guildSettings.set(guildId, data);
-		const settings = mergeDefault(defaultGuildSettings, data);
-        return settings;
+		const guildSettings = (await this.guildSettings.get(guildId)) ?? (await this.createGuildSetting(guildId));
+		const updatedSettings = mergeDefault(guildSettings, data);
+		await this.guildSettings.set(guildId, updatedSettings);
+		return mergeDefault(defaultGuildSettings, updatedSettings);
 	}
 
 	public async getUserSetting(userId: string): Promise<UserSettings> {
 		const userSettings = (await this.userSettings.get(userId)) ?? (await this.createUserSetting(userId));
-		const settings = mergeDefault(defaultUserSettings, userSettings);
-        return settings;
-    }
+		return mergeDefault(defaultUserSettings, userSettings);
+	}
 
 	public async setUserSetting(userId: string, data = {}): Promise<UserSettings> {
 		if (typeof data !== 'object') throw new Error('Data must be an object');
-		await this.userSettings.set(userId, data);
-		const settings = mergeDefault(defaultUserSettings, data);
-        return settings;
-    }
+		const userSettings = (await this.userSettings.get(userId)) ?? (await this.createUserSetting(userId));
+		const updatedSettings = mergeDefault(userSettings, data);
+		this.userSettings.set(userId, updatedSettings);
+		return mergeDefault(defaultUserSettings, updatedSettings);
+	}
 
 	public async resetGuildSetting(guildId: string) {
 		return this.guildSettings.set(guildId, {});
