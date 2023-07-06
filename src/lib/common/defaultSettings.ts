@@ -6,7 +6,12 @@ export const defaultUserSettings: UserSettings = {
 		exp: 0,
 		expToNextLevel: 0,
 		cosmetics: {
-			owned: [],
+			owned: {
+				hat: [],
+				glasses: [],
+				outfit: [],
+				sets: []
+			},
 			equipped: {
 				hat: '',
 				glasses: '',
@@ -18,7 +23,7 @@ export const defaultUserSettings: UserSettings = {
 };
 
 export const defaultGuildSettings: GuildSettings = {
-    prefix: 'd!',
+    prefix: '!!',
     welcome: {
         enabled: false,
         channelId: '',
@@ -26,29 +31,36 @@ export const defaultGuildSettings: GuildSettings = {
     }
 };
 
-export interface Equipped {
-	hat?: string;
-	glasses?: string;
-	outfit?: string;
-	sets?: string;
+export interface Owned {
+	hat: String[];
+	glasses: String[];
+	outfit: String[];
+	sets: String[];
 }
 
-export interface Cosmetics {
-	owned?: any[];
-	equipped?: Equipped;
+export interface Equipped {
+	hat: string;
+	glasses: string;
+	outfit: string;
+	sets: string;
+}
+
+export interface Cosmetic {
+	owned: Owned;
+	equipped: Equipped;
 }
 
 export interface Pet {
-	name?: string;
-	level?: number;
-	exp?: number;
-	expToNextLevel?: number;
-	cosmetics?: Cosmetics;
+	name: string;
+	level: number;
+	exp: number;
+	expToNextLevel: number;
+	cosmetics: Cosmetic;
 }
 
 export interface UserSettings {
-	money?: number;
-	pet?: Pet;
+	money: number;
+	pet: Pet;
 }
 
 export interface Welcome {
