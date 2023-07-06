@@ -48,7 +48,7 @@ export class Settings {
 		return mergeDefault(defaultUserSettings, userSettings);
 	}
 
-	public async setUserSetting(userId: string, data = {}): Promise<UserSettings> {
+	public async setUserSetting(userId: string, data: UserSettings = {}): Promise<UserSettings> {
 		if (typeof data !== 'object') throw new Error('Data must be an object');
 		const userSettings = (await this.userSettings.get(userId)) ?? (await this.createUserSetting(userId));
 		const updatedSettings = mergeDefault(userSettings, data);
