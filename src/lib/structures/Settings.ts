@@ -20,12 +20,14 @@ export class Settings {
 		this.guildSettings = new Keyv(this.path, { namespace: 'guildSettings', adapter: 'sqlite' });
 	}
 
-	public async createGuildSetting(guildId: string): Promise<Boolean> {
-		return this.guildSettings.set(guildId, {});
+	public async createGuildSetting(guildId: string): Promise<GuildSettings> {
+		await this.guildSettings.set(guildId, {});
+		return defaultGuildSettings
 	}
 
-	public async createUserSetting(userId: string): Promise<Boolean> {
-		return this.userSettings.set(userId, {});
+	public async createUserSetting(userId: string): Promise<UserSettings> {
+		await this.userSettings.set(userId, {});
+		return defaultUserSettings
 	}
 
 	public async getGuildSetting(guildId: string): Promise<GuildSettings> {
