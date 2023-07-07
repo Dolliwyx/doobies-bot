@@ -10,7 +10,6 @@ const regexPrefix = container.client.options.regexPrefix!;
 })
 export class UserEvent extends Listener<typeof Events.MessageCreate> {
 	public override async run(message: Message) {
-		console.log(message.content);
 		if (!regexPrefix.test(message.content)) return;
 		if (!message.content.endsWith('?')) return;
 		return message.reply(eightBallAnswers[Math.floor(Math.random() * eightBallAnswers.length)]);
