@@ -1,5 +1,8 @@
 export const defaultUserSettings: UserSettings = {
-	money: 0,
+	money: {
+		balance: 0,
+		lastClaimedDaily: 0
+	},
 	pet: {
 		name: 'Doobie',
 		level: 1,
@@ -23,13 +26,23 @@ export const defaultUserSettings: UserSettings = {
 };
 
 export const defaultGuildSettings: GuildSettings = {
-    prefix: '!!',
-    welcome: {
-        enabled: false,
-        channelId: '',
-        message: ''
-    }
+	prefix: '!!',
+	welcome: {
+		enabled: false,
+		channelId: '',
+		message: ''
+	}
 };
+
+export interface UserSettings {
+	money?: Money;
+	pet?: Pet;
+}
+
+export interface GuildSettings {
+	prefix?: string;
+	welcome?: Welcome;
+}
 
 export interface Owned {
 	hats?: string[];
@@ -45,11 +58,6 @@ export interface Equipped {
 	sets?: string;
 }
 
-export interface Cosmetic {
-	owned?: Owned;
-	equipped?: Equipped;
-}
-
 export interface Pet {
 	name?: string;
 	level?: number;
@@ -58,18 +66,18 @@ export interface Pet {
 	cosmetics?: Cosmetic;
 }
 
-export interface UserSettings {
-	money?: number;
-	pet?: Pet;
+export interface Cosmetic {
+	owned?: Owned;
+	equipped?: Equipped;
+}
+
+export interface Money {
+	balance?: number;
+	lastClaimedDaily?: number;
 }
 
 export interface Welcome {
 	enabled?: boolean;
 	channelId?: string;
 	message?: string;
-}
-
-export interface GuildSettings {
-	prefix?: string;
-	welcome?: Welcome;
 }
