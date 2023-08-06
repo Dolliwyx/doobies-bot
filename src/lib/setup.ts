@@ -7,16 +7,15 @@ import '@sapphire/plugin-logger/register';
 import '@sapphire/plugin-subcommands/register';
 import { setup } from '@skyra/env-utilities';
 import * as colorette from 'colorette';
-import { join } from 'path';
 import { inspect } from 'util';
-import { rootDir, srcDir } from './common/constants';
-import { Settings } from './structures/Settings';
+import { rootDir, srcDir } from '#lib/common/constants';
+import { Settings } from '#lib/structures/Settings';
 
 // Set default behavior to bulk overwrite
 ApplicationCommandRegistries.setDefaultBehaviorWhenNotIdentical(RegisterBehavior.BulkOverwrite);
 
 // Read env var
-setup({ path: join(srcDir, '.env') });
+setup(new URL('.env', srcDir));
 
 // Set default inspection depth
 inspect.defaultOptions.depth = 1;
@@ -24,4 +23,4 @@ inspect.defaultOptions.depth = 1;
 // Enable colorette
 colorette.createColors({ useColor: true });
 
-container.settings = new Settings(join(rootDir, 'db', 'doobies.db'));
+container.settings = new Settings(new URL(process.env.DATABASE_URL, rootDir));
