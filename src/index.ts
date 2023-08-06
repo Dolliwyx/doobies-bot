@@ -1,5 +1,5 @@
-import './lib/setup';
-import { DoobieClient } from './lib/structures/DoobieClient';
+import '#lib/setup';
+import { DoobieClient } from '#lib/structures/DoobieClient';
 
 const client = new DoobieClient();
 
