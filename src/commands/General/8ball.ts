@@ -1,7 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command, type ChatInputCommand, Args } from '@sapphire/framework';
 import type { Message } from 'discord.js';
-import { eightBallAnswers } from '../../lib/common/constants';
+import { eightBallAnswers } from '#lib/common/constants';
 
 @ApplyOptions<Command.Options>({
 	description: 'Ask the mighty 8ball a question.'

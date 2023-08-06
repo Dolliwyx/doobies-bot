@@ -1,6 +1,6 @@
 import { Events, Listener, container } from '@sapphire/framework';
 import type { Message } from 'discord.js';
-import { eightBallAnswers } from '../../lib/common/constants';
+import { eightBallAnswers } from '#lib/common/constants';
 import { ApplyOptions } from '@sapphire/decorators';
 
 const regexPrefix = container.client.options.regexPrefix!;

@@ -1,13 +1,12 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener } from '@sapphire/framework';
 import { AttachmentBuilder, EmbedBuilder, Events, GuildMember, bold, type TextBasedChannel } from 'discord.js';
-import { getImage } from '../../lib/utils';
-import { join } from 'path';
-import { assetDir } from '../../lib/common/constants';
+import { getImage } from '#lib/utils';
+import { assetDir } from '#lib/common/constants';
 import { Canvas, loadFont, loadImage } from 'canvas-constructor/napi-rs';
 import { request } from 'undici';
 
-loadFont(join(assetDir, 'fonts', 'bubbleboddy.fat.ttf'), 'Bubbleboddy Fat');
+loadFont(new URL('fonts/bubbleboddy.fat.ttf', assetDir).pathname, 'Bubbleboddy Fat');
 
 @ApplyOptions<Listener.Options>({
 	event: Events.GuildMemberAdd
@@ -20,7 +19,7 @@ export class UserEvent extends Listener {
 			height = 514,
 			middleY = height / 2;
 
-		const background = await getImage(join(assetDir, 'images', 'defaultBanner.jpg'));
+		const background = await getImage(new URL('images/defaultBanner.jpg', assetDir).pathname);
 		const memberCount = member.guild.memberCount.toLocaleString();
 
 		// Use proper suffix for memberCount unless it's 11, 12, or 13
