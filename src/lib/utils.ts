@@ -3,7 +3,7 @@ import { container } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { cyan } from 'colorette';
 import { EmbedBuilder, type APIUser, type Guild, type Message, type User } from 'discord.js';
-import { RandomLoadingMessage } from './common/constants';
+import { RandomLoadingMessage } from '#lib/common/constants';
 import { readFile } from 'fs/promises';
 import { Image } from '@napi-rs/canvas';
 
@@ -24,6 +24,20 @@ export function pickRandom<T>(array: readonly T[]): T {
  */
 export function sendLoadingMessage(message: Message): Promise<typeof message> {
 	return send(message, { embeds: [new EmbedBuilder().setDescription(pickRandom(RandomLoadingMessage)).setColor('#FF0000')] });
+}
+
+/**
+ * Shuffles an array
+ * @param array The array to shuffle
+ * @example
+ * const shuffledArray = shuffleArray([1, 2, 3, 4]) // [4, 2, 1, 3] 
+ */
+export function shuffleArray<T>(array: T[]): T[] {
+	for (let i = array.length - 1; i > 0; i--) {
+		const j = Math.floor(Math.random() * (i + 1));
+		[array[i], array[j]] = [array[j], array[i]];
+	  }
+	return array;
 }
 
 export function logSuccessCommand(payload: ContextMenuCommandSuccessPayload | ChatInputCommandSuccessPayload | MessageCommandSuccessPayload): void {
