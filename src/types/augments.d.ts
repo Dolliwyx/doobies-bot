@@ -16,8 +16,20 @@ declare module '@skyra/env-utilities' {
 	}
 }
 
+declare module 'shoukaku' {
+	interface Track {
+		requester: string;
+	}
+
+	interface Playlist {
+		requester: string;
+	}
+}
+
 declare module '@sapphire/pieces' {
 	interface Container {
 		settings: Settings;
+		shoukaku: Shoukaku;
+		queue: QueueManager;
 	}
 }

@@ -1,4 +1,8 @@
 export const defaultUserSettings: UserSettings = {
+	money: {
+		balance: 0,
+		lastClaimedDaily: 0
+	},
 	pet: {
 		name: 'Doobie',
 		level: 1,
@@ -18,6 +22,9 @@ export const defaultUserSettings: UserSettings = {
 				sets: ''
 			}
 		}
+	},
+	music: {
+		djs: []
 	}
 };
 
@@ -42,7 +49,14 @@ export interface Welcome {
 }
 
 export interface UserSettings {
+	money: Partial<Money>;
 	pet: Partial<Pet>;
+	music: Partial<Music>;
+}
+
+export interface Money {
+	balance: number;
+	lastClaimedDaily: number;
 }
 
 export interface Pet {
@@ -70,4 +84,8 @@ export interface EquippedCosmetics {
 	eyewear: string;
 	outfit: string;
 	sets: string;
+}
+
+export interface Music {
+	djs: string[];
 }

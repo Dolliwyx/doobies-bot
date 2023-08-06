@@ -10,6 +10,7 @@ import * as colorette from 'colorette';
 import { inspect } from 'util';
 import { rootDir, srcDir } from '#lib/common/constants';
 import { Settings } from '#lib/structures/Settings';
+import { QueueManager } from '#lib/structures/QueueManager';
 
 // Set default behavior to bulk overwrite
 ApplicationCommandRegistries.setDefaultBehaviorWhenNotIdentical(RegisterBehavior.BulkOverwrite);
@@ -24,3 +25,5 @@ inspect.defaultOptions.depth = 1;
 colorette.createColors({ useColor: true });
 
 container.settings = new Settings(new URL(process.env.DATABASE_URL, rootDir));
+
+container.queue = new QueueManager();

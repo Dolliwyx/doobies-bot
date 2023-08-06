@@ -6,6 +6,8 @@ export const assetDir = new URL('assets/', srcDir);
 
 export const RandomLoadingMessage = ['Computing...', 'Thinking...', 'Cooking some food', 'Give me a moment', 'Loading...'];
 
+export const dailyCooldown = 86400000;
+
 export const eightBallAnswers = [
     'It is certain.',
     'It is decidedly so.',
