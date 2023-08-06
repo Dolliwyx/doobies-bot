@@ -1,5 +1,4 @@
 export const defaultUserSettings: UserSettings = {
-	money: 0,
 	pet: {
 		name: 'Doobie',
 		level: 1,
@@ -23,53 +22,52 @@ export const defaultUserSettings: UserSettings = {
 };
 
 export const defaultGuildSettings: GuildSettings = {
-    prefix: '!!',
-    welcome: {
-        enabled: false,
-        channelId: '',
-        message: ''
-    }
+	prefix: '!!',
+	welcome: {
+		enabled: false,
+		channelId: '',
+		message: ''
+	}
 };
 
-export interface Owned {
-	hats?: string[];
-	eyewears?: string[];
-	outfits?: string[];
-	sets?: string[];
-}
-
-export interface Equipped {
-	hat?: string;
-	eyewear?: string;
-	outfit?: string;
-	sets?: string;
-}
-
-export interface Cosmetic {
-	owned?: Owned;
-	equipped?: Equipped;
-}
-
-export interface Pet {
-	name?: string;
-	level?: number;
-	exp?: number;
-	expToNextLevel?: number;
-	cosmetics?: Cosmetic;
-}
-
-export interface UserSettings {
-	money?: number;
-	pet?: Pet;
+export interface GuildSettings {
+	prefix: string;
+	welcome: Partial<Welcome>;
 }
 
 export interface Welcome {
-	enabled?: boolean;
-	channelId?: string;
-	message?: string;
+	enabled: boolean;
+	channelId: string;
+	message: string;
 }
 
-export interface GuildSettings {
-	prefix?: string;
-	welcome?: Welcome;
+export interface UserSettings {
+	pet: Partial<Pet>;
+}
+
+export interface Pet {
+	name: string;
+	level: number;
+	exp: number;
+	expToNextLevel: number;
+	cosmetics: Partial<Cosmetic>;
+}
+
+export interface Cosmetic {
+	owned: Partial<OwnedCosmetics>;
+	equipped: Partial<EquippedCosmetics>;
+}
+
+export interface OwnedCosmetics {
+	hats: string[];
+	eyewears: string[];
+	outfits: string[];
+	sets: string[];
+}
+
+export interface EquippedCosmetics {
+	hat: string;
+	eyewear: string;
+	outfit: string;
+	sets: string;
 }
