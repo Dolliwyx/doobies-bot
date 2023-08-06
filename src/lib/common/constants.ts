@@ -1,8 +1,8 @@
-import { join } from 'path';
+import { URL } from 'node:url';
 
-export const rootDir = join(__dirname, '..', '..', '..');
-export const srcDir = join(rootDir, 'src');
-export const assetDir = join(rootDir, 'assets');
+export const rootDir = new URL('../../../', import.meta.url);
+export const srcDir = new URL('src/', rootDir);
+export const assetDir = new URL('assets/', srcDir);
 
 export const RandomLoadingMessage = ['Computing...', 'Thinking...', 'Cooking some food', 'Give me a moment', 'Loading...'];
 
