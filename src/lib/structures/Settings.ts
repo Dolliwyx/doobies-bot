@@ -1,23 +1,23 @@
 import { mergeDefault } from '@sapphire/utilities';
 import Keyv from 'keyv';
-import { defaultGuildSettings, defaultUserSettings, type GuildSettings, type UserSettings } from '../common/defaultSettings';
+import { defaultGuildSettings, defaultUserSettings, type GuildSettings, type UserSettings } from '#lib/common/defaultSettings';
 
 export class Settings {
-	public path: string;
+	public path: URL;
 	public userSettings!: Keyv;
 	public guildSettings!: Keyv;
 	public db!: Keyv;
 
-	public constructor(path: string) {
+	public constructor(path: URL) {
 		this.path = path;
 		this.userSettings;
 		this.guildSettings;
 	}
 
 	public init() {
-		this.db = new Keyv(this.path, { adapter: 'sqlite' });
-		this.userSettings = new Keyv(this.path, { namespace: 'userSettings', adapter: 'sqlite' });
-		this.guildSettings = new Keyv(this.path, { namespace: 'guildSettings', adapter: 'sqlite' });
+		this.db = new Keyv(this.path.pathname, { adapter: 'sqlite' });
+		this.userSettings = new Keyv(this.path.pathname, { namespace: 'userSettings', adapter: 'sqlite' });
+		this.guildSettings = new Keyv(this.path.pathname, { namespace: 'guildSettings', adapter: 'sqlite' });
 	}
 
 	public async createGuildSetting(guildId: string): Promise<GuildSettings> {
@@ -35,7 +35,7 @@ export class Settings {
 		return mergeDefault(defaultGuildSettings, guildSettings);
 	}
 
-	public async setGuildSetting(guildId: string, data: GuildSettings = {}): Promise<GuildSettings> {
+	public async setGuildSetting(guildId: string, data: Partial<GuildSettings> = {}): Promise<GuildSettings> {
 		if (typeof data !== 'object') throw new Error('Data must be an object');
 		const guildSettings = (await this.guildSettings.get(guildId)) ?? (await this.createGuildSetting(guildId));
 		const updatedSettings = mergeDefault(guildSettings, data);
@@ -48,7 +48,7 @@ export class Settings {
 		return mergeDefault(defaultUserSettings, userSettings);
 	}
 
-	public async setUserSetting(userId: string, data: UserSettings = {}): Promise<UserSettings> {
+	public async setUserSetting(userId: string, data: Partial<UserSettings> = {}): Promise<UserSettings> {
 		if (typeof data !== 'object') throw new Error('Data must be an object');
 		const userSettings = (await this.userSettings.get(userId)) ?? (await this.createUserSetting(userId));
 		const updatedSettings = mergeDefault(userSettings, data);
