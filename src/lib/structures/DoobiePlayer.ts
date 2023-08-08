@@ -49,7 +49,10 @@ export class DoobiePlayer {
 				});
 			})
 			.on('end', async (data) => {
-				if (data.reason === 'loadFailed') await this.textChannel!.send({ content: `Failed to load track: ${data.track.info.title}` });
+				if (data.reason === 'loadFailed') {
+					await this.textChannel!.send({ content: `Failed to load track: ${data.track.info.title}. Skipping...` });
+					await this.skip()
+				}
 				if (data.reason === 'finished') {
 					await this.textChannel!.send({ content: `Finished playing: ${bold(data.track.info.title)} by ${data.track.info.author}` });
 					this.queue.shift();
