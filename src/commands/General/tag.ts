@@ -83,9 +83,9 @@ export class UserCommand extends Subcommand {
 
 	@ModOnly()
 	public async messageCreate(message: Message, args: Args) {
-		const tagName = await args.pick('string');
+		const tagName = await args.pick('string').catch(() => null);
 		if (!tagName) return message.reply('You must provide a tag name.');
-		const tagContent = await args.rest('string');
+		const tagContent = await args.rest('string').catch(() => null);
 		if (!tagContent) return message.reply('You must provide a tag content.');
 
 		const { tags } = await this.container.settings.getGuildSetting(message.guildId!);
@@ -100,7 +100,7 @@ export class UserCommand extends Subcommand {
 
 	@ModOnly()
 	public async messageDelete(message: Message, args: Args) {
-		const tagName = await args.pick('string');
+		const tagName = await args.pick('string').catch(() => null);
 		if (!tagName) return message.reply('You must provide a tag name.');
 
 		const { tags } = await this.container.settings.getGuildSetting(message.guildId!);
@@ -115,9 +115,9 @@ export class UserCommand extends Subcommand {
 
 	@ModOnly()
 	public async messageEdit(message: Message, args: Args) {
-		const tagName = await args.pick('string');
+		const tagName = await args.pick('string').catch(() => null);
 		if (!tagName) return message.reply('You must provide a tag name.');
-		const tagContent = await args.rest('string');
+		const tagContent = await args.rest('string').catch(() => null);
 		if (!tagContent) return message.reply('You must provide a tag content.');
 
 		const { tags } = await this.container.settings.getGuildSetting(message.guildId!);
