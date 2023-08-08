@@ -10,7 +10,7 @@ import { inlineCode, type Message } from 'discord.js';
 export class UserCommand extends Command {
 	public override async messageRun(message: Message) {
 		// Get prefix from database
-		const prefix = await this.container.client.fetchPrefix(message) as string;
+		const prefix = (await this.container.client.fetchPrefix(message)) as string;
 
 		// Reply with prefix
 		return send(message, `The prefix for this guild is ${inlineCode(prefix)}`);

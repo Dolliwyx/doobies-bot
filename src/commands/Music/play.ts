@@ -7,7 +7,7 @@ import { LoadType, type Playlist, type Track } from 'shoukaku';
 @ApplyOptions<Command.Options>({
 	description: 'Play a song',
 	aliases: ['p'],
-    preconditions: ['GuildVoiceOnly']
+	preconditions: ['GuildVoiceOnly']
 })
 export class UserCommand extends Command {
 	public override registerApplicationCommands(registry: Command.Registry) {
@@ -28,7 +28,7 @@ export class UserCommand extends Command {
 
 		if (guildPlayer.voiceChannel && (interaction.member as GuildMember).voice.channelId !== guildPlayer.voiceChannel?.id)
 			return interaction.editReply({ message: 'You must be in the same voice channel to use this command.' });
-		
+
 		try {
 			new URL(query);
 		} catch (error) {
@@ -47,10 +47,9 @@ export class UserCommand extends Command {
 
 		const member = interaction.member as GuildMember;
 		if (!member.voice.channelId) return interaction.editReply({ content: 'You must be in a voice channel to use this command.' });
-		
+
 		if (!guildPlayer.voiceChannel) await guildPlayer.join(member.voice.channel!);
 
-		
 		if (member.voice.channelId !== guildPlayer.voiceChannel!.id)
 			return interaction.editReply({ content: 'You must be in the same voice channel to use this command.' });
 		if (!guildPlayer.textChannel) {

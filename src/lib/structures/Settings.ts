@@ -22,12 +22,12 @@ export class Settings {
 
 	public async createGuildSetting(guildId: string): Promise<GuildSettings> {
 		await this.guildSettings.set(guildId, {});
-		return defaultGuildSettings
+		return defaultGuildSettings;
 	}
 
 	public async createUserSetting(userId: string): Promise<UserSettings> {
 		await this.userSettings.set(userId, {});
-		return defaultUserSettings
+		return defaultUserSettings;
 	}
 
 	public async getGuildSetting(guildId: string): Promise<GuildSettings> {

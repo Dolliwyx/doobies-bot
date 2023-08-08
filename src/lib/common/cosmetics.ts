@@ -3,7 +3,7 @@ export const hats: Cosmetic[] = [
 		name: 'Default Glasses',
 		price: 0,
 		description: 'Default glasses for your pet doobie.',
-        path: 'images/glasses/default.png',
+		path: 'images/glasses/default.png'
 	}
 ];
 
@@ -43,9 +43,9 @@ export const sets: Cosmetic[] = [
 ];
 
 export interface Cosmetic {
-    name?: string;
-    price?: number;
-    description?: string;
-    path?: string;
-    exclusive?: boolean;
+	name?: string;
+	price?: number;
+	description?: string;
+	path?: string;
+	exclusive?: boolean;
 }

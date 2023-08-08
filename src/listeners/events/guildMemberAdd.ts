@@ -63,16 +63,24 @@ export class UserEvent extends Listener {
 			})
 			.webpAsync(100);
 
-			const attachment = new AttachmentBuilder(await canvas, { name: 'welcome.webp' });
+		const attachment = new AttachmentBuilder(await canvas, { name: 'welcome.webp' });
 
-			const embed = new EmbedBuilder()
-				.setColor('#E3F2FF')
-				.setImage('attachment://welcome.webp')
-				.setDescription([`${bold("welcome to doobies")}\n`,
-				"check out the server rules over at <#1031459803949707355> and get yourself some roles over at <#1031459841333526578>!\n",
-				"thank you for joining and we hope you have a great stay"].join('\n'))
+		const embed = new EmbedBuilder()
+			.setColor('#E3F2FF')
+			.setImage('attachment://welcome.webp')
+			.setDescription(
+				[
+					`${bold('welcome to doobies')}\n`,
+					'check out the server rules over at <#1031459803949707355> and get yourself some roles over at <#1031459841333526578>!\n',
+					'thank you for joining and we hope you have a great stay'
+				].join('\n')
+			);
 
-		return (member.guild.channels.cache.get(guildSettings.welcome.channelId) as TextBasedChannel).send({ content: `hey ${member.user}!`,embeds: [embed], files: [attachment]})
+		return (member.guild.channels.cache.get(guildSettings.welcome.channelId) as TextBasedChannel).send({
+			content: `hey ${member.user}!`,
+			embeds: [embed],
+			files: [attachment]
+		});
 		//return (member.guild.channels.cache.get(guildSettings.welcome.channelId) as TextBasedChannel).send({ content: `Welcome to ${bold(member.guild.name)}, ${member.user}!`, files: [attachment] });
 	}
 }

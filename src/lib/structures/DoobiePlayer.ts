@@ -51,7 +51,7 @@ export class DoobiePlayer {
 			.on('end', async (data) => {
 				if (data.reason === 'loadFailed') {
 					await this.textChannel!.send({ content: `Failed to load track: ${data.track.info.title}. Skipping...` });
-					await this.skip()
+					await this.skip();
 				}
 				if (data.reason === 'finished') {
 					await this.textChannel!.send({ content: `Finished playing: ${bold(data.track.info.title)} by ${data.track.info.author}` });
@@ -61,9 +61,12 @@ export class DoobiePlayer {
 					} else {
 						await this.textChannel?.send({ content: 'Queue is empty.' });
 						this.isPlaying = false;
-						setTimeout(async () => {
-							if (!this.queue.length) await this.disconnect();
-						}, 1000 * 60 * 5);
+						setTimeout(
+							async () => {
+								if (!this.queue.length) await this.disconnect();
+							},
+							1000 * 60 * 5
+						);
 					}
 				}
 			})
@@ -72,7 +75,9 @@ export class DoobiePlayer {
 				return this.textChannel?.send({ content: 'I am disconnected from the voice channel.' });
 			})
 			.on('exception', async (data) => {
-				return this.textChannel?.send({ content: `An error occured while playing the track: ${data.exception.message} (TYPE: ${data.type}))` });
+				return this.textChannel?.send({
+					content: `An error occured while playing the track: ${data.exception.message} (TYPE: ${data.type}))`
+				});
 			});
 
 		return player;

@@ -14,9 +14,9 @@ export class UserCommand extends Command {
 		);
 	}
 	public override async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
-        const text = interaction.options.getString('text', true);
-        const transformedText = text.split(' ').join('🤸');
+		const text = interaction.options.getString('text', true);
+		const transformedText = text.split(' ').join('🤸');
 
-        return interaction.reply({ content: transformedText });
-    };
+		return interaction.reply({ content: transformedText });
+	}
 }

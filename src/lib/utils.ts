@@ -30,13 +30,13 @@ export function sendLoadingMessage(message: Message): Promise<typeof message> {
  * Shuffles an array
  * @param array The array to shuffle
  * @example
- * const shuffledArray = shuffleArray([1, 2, 3, 4]) // [4, 2, 1, 3] 
+ * const shuffledArray = shuffleArray([1, 2, 3, 4]) // [4, 2, 1, 3]
  */
 export function shuffleArray<T>(array: T[]): T[] {
 	for (let i = array.length - 1; i > 0; i--) {
 		const j = Math.floor(Math.random() * (i + 1));
 		[array[i], array[j]] = [array[j], array[i]];
-	  }
+	}
 	return array;
 }
 

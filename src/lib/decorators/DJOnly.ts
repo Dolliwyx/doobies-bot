@@ -10,7 +10,10 @@ export function DJOnly(): MethodDecorator {
 			music: { djs }
 		} = await container.settings.getUserSetting(guildPlayer.owner);
 		if (guildPlayer.owner !== interaction.user.id && !djs?.includes(interaction.user.id)) {
-			throw new UserError({ message: 'The owner of this music session does not have you as a DJ. Have them add you using `/dj add`!', identifier: 'PermissionsMissing' });
+			throw new UserError({
+				message: 'The owner of this music session does not have you as a DJ. Have them add you using `/dj add`!',
+				identifier: 'PermissionsMissing'
+			});
 		}
 		return true;
 	});

@@ -49,5 +49,4 @@ export class DoobieClient extends SapphireClient {
 
 		return prefix as string;
 	};
-
 }

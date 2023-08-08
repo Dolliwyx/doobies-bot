@@ -15,8 +15,8 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
 			tag = message.content.replace(this.container.client.options.regexPrefix!, '').trim().split(' ')[0];
 		}
 		const { tags } = await this.container.settings.getGuildSetting(message.guildId!);
-        const reoslvedTag = tags.find((t) => t?.name.toLowerCase() === tag.toLowerCase()) ?? null;
-        if (!reoslvedTag) return;
-        return message.reply(reoslvedTag.content);
+		const reoslvedTag = tags.find((t) => t?.name.toLowerCase() === tag.toLowerCase()) ?? null;
+		if (!reoslvedTag) return;
+		return message.reply(reoslvedTag.content);
 	}
 }
