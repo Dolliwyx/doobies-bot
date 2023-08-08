@@ -84,7 +84,9 @@ export class UserCommand extends Subcommand {
     @ModOnly()
 	public async messageCreate(message: Message, args: Args) {
         const tagName = await args.pick('string');
+		if (!tagName) return message.reply('You must provide a tag name.');
         const tagContent = await args.rest('string');
+		if (!tagContent) return message.reply('You must provide a tag content.');
 
         const { tags } = await this.container.settings.getGuildSetting(message.guildId!);
         if (tags.some((t) => t?.name === tagName)) return message.reply(`There is already a tag with the name ${inlineCode(tagName)}`);
@@ -98,6 +100,7 @@ export class UserCommand extends Subcommand {
     @ModOnly()
 	public async messageDelete(message: Message, args: Args) {
         const tagName = await args.pick('string');
+		if (!tagName) return message.reply('You must provide a tag name.');
 
         const { tags } = await this.container.settings.getGuildSetting(message.guildId!);
         if (!tags.some((t) => t?.name === tagName)) return message.reply(`There is no tag with the name ${inlineCode(tagName)}`);
@@ -110,7 +113,9 @@ export class UserCommand extends Subcommand {
     @ModOnly()
     public async messageEdit(message: Message, args: Args) {
         const tagName = await args.pick('string');
+		if (!tagName) return message.reply('You must provide a tag name.');
         const tagContent = await args.rest('string');
+		if (!tagContent) return message.reply('You must provide a tag content.');
 
         const { tags } = await this.container.settings.getGuildSetting(message.guildId!);
         if (!tags.some((t) => t?.name === tagName)) return message.reply(`There is no tag with the name ${inlineCode(tagName)}`);
