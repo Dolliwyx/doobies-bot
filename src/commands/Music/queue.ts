@@ -14,7 +14,7 @@ import { DJOnly } from '#lib/decorators/DJOnly';
 		{ name: 'remove', chatInputRun: 'interactionRemove' },
 		{ name: 'shuffle', chatInputRun: 'interactionShuffle' }
 	],
-    preconditions: ['SameVC', 'GuildVoiceOnly']
+	preconditions: ['SameVC', 'GuildVoiceOnly']
 })
 export class UserCommand extends Subcommand {
 	public override registerApplicationCommands(registry: Subcommand.Registry) {
@@ -44,16 +44,20 @@ export class UserCommand extends Subcommand {
 			const paginatedMessage = new PaginatedMessage({
 				template: new EmbedBuilder().setColor('Random').setAuthor({ name: 'Current music queue', iconURL: interaction.guild?.iconURL()! })
 			});
-            let pageMultiplier = 0;
+			let pageMultiplier = 0;
 			for (const page of pages) {
 				paginatedMessage.addPageEmbed((embed) =>
 					embed
 						.setDescription(
-							page.map((song, index) => `${index + 1 + (10 * pageMultiplier)}. ${bold(song.info.title)} by ${underscore(song.info.author)}`).join('\n')
+							page
+								.map(
+									(song, index) => `${index + 1 + 10 * pageMultiplier}. ${bold(song.info.title)} by ${underscore(song.info.author)}`
+								)
+								.join('\n')
 						)
-						.setFooter({ text: `Requested by ${interaction.user.username}`, iconURL: interaction.user.displayAvatarURL()!})
+						.setFooter({ text: `Requested by ${interaction.user.username}`, iconURL: interaction.user.displayAvatarURL()! })
 				);
-                pageMultiplier++;
+				pageMultiplier++;
 			}
 
 			return paginatedMessage.run(interaction, interaction.user);
@@ -67,7 +71,7 @@ export class UserCommand extends Subcommand {
 					.setDescription(
 						queue.map((song, index) => `${index + 1}. ${bold(song.info.title)} by ${underscore(song.info.author)}`).join('\n')
 					)
-                    .setFooter({ text: `1/1 • Requested by ${interaction.user.username}`, iconURL: interaction.user.displayAvatarURL()!})
+					.setFooter({ text: `1/1 • Requested by ${interaction.user.username}`, iconURL: interaction.user.displayAvatarURL()! })
 			]
 		});
 	}
@@ -75,7 +79,7 @@ export class UserCommand extends Subcommand {
 	@DJOnly()
 	public async interactionClear(interaction: Subcommand.ChatInputCommandInteraction) {
 		const guildPlayer = await this.container.queue.get(interaction.guildId!)!;
-		
+
 		if (!guildPlayer) return interaction.reply({ content: 'There is no music playing in this server.', ephemeral: true });
 		guildPlayer.queue = [];
 		return interaction.reply({ content: 'The queue has been cleared.' });
@@ -83,30 +87,31 @@ export class UserCommand extends Subcommand {
 
 	@DJOnly()
 	public async interactionRemove(interaction: Subcommand.ChatInputCommandInteraction) {
-        const index = interaction.options.getNumber('index', true);
-        const guildPlayer = await this.container.queue.get(interaction.guildId!)!;
-		
+		const index = interaction.options.getNumber('index', true);
+		const guildPlayer = await this.container.queue.get(interaction.guildId!)!;
+
 		if (!guildPlayer) return interaction.reply({ content: 'There is no music playing in this server.', ephemeral: true });
 
-        const songToBeRemoved = guildPlayer.queue[index - 1];
+		const songToBeRemoved = guildPlayer.queue[index - 1];
 
-        guildPlayer.queue.splice(index - 1, 1);
+		guildPlayer.queue.splice(index - 1, 1);
 
-        return interaction.reply({ content: `Removed ${bold(songToBeRemoved.info.title)} from the queue.` });
-    }
+		return interaction.reply({ content: `Removed ${bold(songToBeRemoved.info.title)} from the queue.` });
+	}
 
 	@DJOnly()
 	public async interactionShuffle(interaction: Subcommand.ChatInputCommandInteraction) {
 		const guildPlayer = await this.container.queue.get(interaction.guildId!)!;
-		
+
 		if (!guildPlayer) return interaction.reply({ content: 'There is no music playing in this server.', ephemeral: true });
 
-        if (guildPlayer.queue.length < 3) return interaction.reply({ content: 'There are not enough songs in the queue to shuffle.', ephemeral: true });
+		if (guildPlayer.queue.length < 3)
+			return interaction.reply({ content: 'There are not enough songs in the queue to shuffle.', ephemeral: true });
 
-        const currentTrack = guildPlayer.queue.shift()!;
-        guildPlayer.queue = shuffleArray(guildPlayer.queue);
-        guildPlayer.queue.unshift(currentTrack);
+		const currentTrack = guildPlayer.queue.shift()!;
+		guildPlayer.queue = shuffleArray(guildPlayer.queue);
+		guildPlayer.queue.unshift(currentTrack);
 
-        return interaction.reply({ content: 'The queue has been shuffled.' });
+		return interaction.reply({ content: 'The queue has been shuffled.' });
 	}
 }
