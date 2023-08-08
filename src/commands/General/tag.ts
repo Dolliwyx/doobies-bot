@@ -95,7 +95,7 @@ export class UserCommand extends Subcommand {
 		const tag = { name: tagName, content: tagContent, author: message.author.id, createdAt: Date.now(), updatedAt: Date.now() };
 		await this.container.settings.setGuildSetting(message.guildId!, { tags: [...tags, tag] });
 
-		return message.reply(`Successfully created the tag ${inlineCode(tagName)}`);
+		return message.reply(`Successfully created the tag ${inlineCode(tag.name)}`);
 	}
 
 	@ModOnly()
@@ -104,7 +104,8 @@ export class UserCommand extends Subcommand {
 		if (!tagName) return message.reply('You must provide a tag name.');
 
 		const { tags } = await this.container.settings.getGuildSetting(message.guildId!);
-		if (!tags.some((t) => t?.name === tagName)) return message.reply(`There is no tag with the name ${inlineCode(tagName)}`);
+		if (!tags.some((t) => t?.name.toLowerCase() === tagName.toLowerCase()))
+			return message.reply(`There is no tag with the name ${inlineCode(tagName)}`);
 
 		await this.container.settings.setGuildSetting(message.guildId!, {
 			tags: tags.filter((t) => t?.name.toLowerCase() !== tagName.toLowerCase())
@@ -128,9 +129,11 @@ export class UserCommand extends Subcommand {
 		tag.content = tagContent;
 		tag.updatedAt = Date.now();
 
-		await this.container.settings.setGuildSetting(message.guildId!, { tags: tags.filter((t) => t?.name !== tagName).concat(tag) });
+		await this.container.settings.setGuildSetting(message.guildId!, {
+			tags: tags.filter((t) => t?.name.toLowerCase() !== tagName.toLowerCase()).concat(tag)
+		});
 
-		return message.reply(`Successfully edited the tag ${inlineCode(tagName)}`);
+		return message.reply(`Successfully edited the tag ${inlineCode(tag.name)}`);
 	}
 
 	public override async autocompleteRun(interaction: Subcommand.AutocompleteInteraction) {
