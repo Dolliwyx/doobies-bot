@@ -21,7 +21,7 @@ export class UserCommand extends Command {
 
 	@DJOnly()
 	public override async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
-		await interaction.deferReply();
+		await interaction.reply({ content: 'Searching...' });
 
 		const guildPlayer = this.container.queue.add(interaction.guild!, interaction.user)!;
 		let query = interaction.options.getString('query', true);
