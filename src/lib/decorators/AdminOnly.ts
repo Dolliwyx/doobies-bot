@@ -6,7 +6,7 @@ import type { Message } from 'discord.js';
 export function AdminOnly(): MethodDecorator {
 	return createFunctionPrecondition(async (message: Message) => {
 		if (
-			!envParseArray('OWNERS').includes(message.author.id) ||
+			envParseArray('OWNERS').includes(message.author.id) ||
 			!message.member?.permissions.toArray().some((perms) => perms.includes('Administrator'))
 		) {
 			throw new UserError({ message: 'You must be an administrator to use this command.', identifier: 'PermissionsMissing' });
