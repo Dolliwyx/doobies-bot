@@ -11,7 +11,7 @@ import { EmbedBuilder, inlineCode, time, type Message, userMention } from 'disco
 		{ name: 'info', chatInputRun: 'interactionInfo' },
 		{ name: 'create', messageRun: 'messageCreate' },
 		{ name: 'delete', messageRun: 'messageDelete' },
-        { name: 'edit', messageRun: 'messageEdit' },
+		{ name: 'edit', messageRun: 'messageEdit' }
 	]
 })
 export class UserCommand extends Subcommand {
@@ -73,7 +73,7 @@ export class UserCommand extends Subcommand {
 					.addFields(
 						{ name: 'Created by', value: userMention(tag.author), inline: true },
 						{ name: 'Created at:', value: `${time(tag.createdAt, 'f')} (${time(tag.createdAt, 'R')})`, inline: true },
-                        { name: 'Last updated:', value: `${time(tag.updatedAt, 'f')} (${time(tag.updatedAt, 'R')})`, inline: true },
+						{ name: 'Last updated:', value: `${time(tag.updatedAt, 'f')} (${time(tag.updatedAt, 'R')})`, inline: true }
 					)
 					.setFooter({ text: `Requested by ${interaction.user.username}` })
 					.setTimestamp()
@@ -81,53 +81,57 @@ export class UserCommand extends Subcommand {
 		});
 	}
 
-    @ModOnly()
+	@ModOnly()
 	public async messageCreate(message: Message, args: Args) {
-        const tagName = await args.pick('string');
+		const tagName = await args.pick('string');
 		if (!tagName) return message.reply('You must provide a tag name.');
-        const tagContent = await args.rest('string');
+		const tagContent = await args.rest('string');
 		if (!tagContent) return message.reply('You must provide a tag content.');
 
-        const { tags } = await this.container.settings.getGuildSetting(message.guildId!);
-        if (tags.some((t) => t?.name === tagName)) return message.reply(`There is already a tag with the name ${inlineCode(tagName)}`);
+		const { tags } = await this.container.settings.getGuildSetting(message.guildId!);
+		if (tags.some((t) => t?.name.toLowerCase() === tagName.toLowerCase()))
+			return message.reply(`There is already a tag with the name ${inlineCode(tagName)}`);
 
-        const tag = { name: tagName, content: tagContent, author: message.author.id, createdAt: Date.now(), updatedAt: Date.now() };
-        await this.container.settings.setGuildSetting(message.guildId!, { tags: [...tags, tag] });
+		const tag = { name: tagName, content: tagContent, author: message.author.id, createdAt: Date.now(), updatedAt: Date.now() };
+		await this.container.settings.setGuildSetting(message.guildId!, { tags: [...tags, tag] });
 
-        return message.reply(`Successfully created the tag ${inlineCode(tagName)}`);
-    }
+		return message.reply(`Successfully created the tag ${inlineCode(tagName)}`);
+	}
 
-    @ModOnly()
+	@ModOnly()
 	public async messageDelete(message: Message, args: Args) {
-        const tagName = await args.pick('string');
+		const tagName = await args.pick('string');
 		if (!tagName) return message.reply('You must provide a tag name.');
 
-        const { tags } = await this.container.settings.getGuildSetting(message.guildId!);
-        if (!tags.some((t) => t?.name === tagName)) return message.reply(`There is no tag with the name ${inlineCode(tagName)}`);
+		const { tags } = await this.container.settings.getGuildSetting(message.guildId!);
+		if (!tags.some((t) => t?.name === tagName)) return message.reply(`There is no tag with the name ${inlineCode(tagName)}`);
 
-        await this.container.settings.setGuildSetting(message.guildId!, { tags: tags.filter((t) => t?.name !== tagName) });
+		await this.container.settings.setGuildSetting(message.guildId!, {
+			tags: tags.filter((t) => t?.name.toLowerCase() !== tagName.toLowerCase())
+		});
 
-        return message.reply(`Successfully deleted the tag ${inlineCode(tagName)}`);
-    }
+		return message.reply(`Successfully deleted the tag ${inlineCode(tagName)}`);
+	}
 
-    @ModOnly()
-    public async messageEdit(message: Message, args: Args) {
-        const tagName = await args.pick('string');
+	@ModOnly()
+	public async messageEdit(message: Message, args: Args) {
+		const tagName = await args.pick('string');
 		if (!tagName) return message.reply('You must provide a tag name.');
-        const tagContent = await args.rest('string');
+		const tagContent = await args.rest('string');
 		if (!tagContent) return message.reply('You must provide a tag content.');
 
-        const { tags } = await this.container.settings.getGuildSetting(message.guildId!);
-        if (!tags.some((t) => t?.name === tagName)) return message.reply(`There is no tag with the name ${inlineCode(tagName)}`);
+		const { tags } = await this.container.settings.getGuildSetting(message.guildId!);
+		if (!tags.some((t) => t?.name.toLowerCase() === tagName.toLowerCase()))
+			return message.reply(`There is no tag with the name ${inlineCode(tagName)}`);
 
-        const tag = tags.find((t) => t?.name === tagName)!;
-        tag.content = tagContent;
-        tag.updatedAt = Date.now();
+		const tag = tags.find((t) => t?.name.toLowerCase() === tagName.toLowerCase())!;
+		tag.content = tagContent;
+		tag.updatedAt = Date.now();
 
-        await this.container.settings.setGuildSetting(message.guildId!, { tags: tags.filter((t) => t?.name !== tagName).concat(tag) });
+		await this.container.settings.setGuildSetting(message.guildId!, { tags: tags.filter((t) => t?.name !== tagName).concat(tag) });
 
-        return message.reply(`Successfully edited the tag ${inlineCode(tagName)}`);
-    }
+		return message.reply(`Successfully edited the tag ${inlineCode(tagName)}`);
+	}
 
 	public override async autocompleteRun(interaction: Subcommand.AutocompleteInteraction) {
 		const { tags } = await this.container.settings.getGuildSetting(interaction.guildId!);
