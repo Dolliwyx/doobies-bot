@@ -2,7 +2,7 @@ import { ModOnly } from '#lib/decorators/ModOnly';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { Args } from '@sapphire/framework';
 import { Subcommand } from '@sapphire/plugin-subcommands';
-import { EmbedBuilder, inlineCode, time, type Message } from 'discord.js';
+import { EmbedBuilder, inlineCode, time, type Message, userMention } from 'discord.js';
 
 @ApplyOptions<Subcommand.Options>({
 	description: 'Show a tag in this server',
@@ -71,7 +71,7 @@ export class UserCommand extends Subcommand {
 				new EmbedBuilder()
 					.setAuthor({ name: tag.name, iconURL: interaction.guild?.iconURL()! })
 					.addFields(
-						{ name: 'Created by', value: tag.author, inline: true },
+						{ name: 'Created by', value: userMention(tag.author), inline: true },
 						{ name: 'Created at:', value: `${time(tag.createdAt, 'f')} (${time(tag.createdAt, 'R')})`, inline: true },
                         { name: 'Last updated:', value: `${time(tag.updatedAt, 'f')} (${time(tag.updatedAt, 'R')})`, inline: true },
 					)
@@ -89,7 +89,7 @@ export class UserCommand extends Subcommand {
         const { tags } = await this.container.settings.getGuildSetting(message.guildId!);
         if (tags.some((t) => t?.name === tagName)) return message.reply(`There is already a tag with the name ${inlineCode(tagName)}`);
 
-        const tag = { name: tagName, content: tagContent, author: message.author.tag, createdAt: Date.now(), updatedAt: Date.now() };
+        const tag = { name: tagName, content: tagContent, author: message.author.id, createdAt: Date.now(), updatedAt: Date.now() };
         await this.container.settings.setGuildSetting(message.guildId!, { tags: [...tags, tag] });
 
         return message.reply(`Successfully created the tag ${inlineCode(tagName)}`);
