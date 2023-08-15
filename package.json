@@ -33,7 +33,6 @@
 		"discord.js": "^14.12.1",
 		"keyv": "^4.5.3",
 		"shoukaku": "github:Deivu/Shoukaku",
-		"spotilink": "github:Dolliwyx/spotilink#2.0.0-beta",
 		"undici": "^5.23.0"
 	},
 	"devDependencies": {
