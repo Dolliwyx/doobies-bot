@@ -18,9 +18,10 @@ export class UserEvent extends Listener {
 					.addFields(
 						{
 							name: 'ID',
-							value: data.user.id
+							value: data.user.id,
+							inline: true
 						},
-						{ name: 'Reason', value: data.reason ?? 'No reason provided.' }
+						{ name: 'Reason', value: data.reason ?? 'No reason provided.', inline: true }
 					)
 			]
 		});
