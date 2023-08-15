@@ -37,6 +37,8 @@
 		"undici": "^5.23.0"
 	},
 	"devDependencies": {
+		"@commitlint/cli": "^17.7.1",
+		"@commitlint/config-conventional": "^17.7.0",
 		"@sapphire/cli": "^1.6.1",
 		"@sapphire/prettier-config": "^2.0.0",
 		"@sapphire/ts-config": "^4.0.1",
@@ -57,6 +59,11 @@
 		"dev": "run-s build start",
 		"watch:start": "tsc-watch --onSuccess \"node ./dist/index.js\"",
 		"format": "prettier --write \"src/**/*.ts\""
+	},
+	"commitlint": {
+		"extends": [
+			"@commitlint/config-conventional"
+		]
 	},
 	"prettier": "@sapphire/prettier-config"
 }
