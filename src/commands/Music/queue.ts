@@ -5,6 +5,7 @@ import { EmbedBuilder, bold, underscore } from 'discord.js';
 import { chunk } from '@sapphire/utilities';
 import { shuffleArray } from '#lib/utils';
 import { DJOnly } from '#lib/decorators/DJOnly';
+import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 
 @ApplyOptions<Subcommand.Options>({
 	description: 'View and manage your current music queue.',
@@ -14,7 +15,8 @@ import { DJOnly } from '#lib/decorators/DJOnly';
 		{ name: 'remove', chatInputRun: 'interactionRemove' },
 		{ name: 'shuffle', chatInputRun: 'interactionShuffle' }
 	],
-	preconditions: ['SameVC', 'GuildVoiceOnly', 'GuildTextOnly']
+	preconditions: ['SameVC'],
+	runIn: [CommandOptionsRunTypeEnum.GuildText, CommandOptionsRunTypeEnum.GuildVoice]
 })
 export class UserCommand extends Subcommand {
 	public override registerApplicationCommands(registry: Subcommand.Registry) {

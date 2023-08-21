@@ -1,11 +1,12 @@
 import { DJOnly } from '#lib/decorators/DJOnly';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Command } from '@sapphire/framework';
+import { Command, CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { bold } from 'discord.js';
 
 @ApplyOptions<Command.Options>({
 	description: 'Adjust the volume of the music player.',
-	preconditions: ['SameVC', 'GuildVoiceOnly', 'GuildTextOnly']
+	preconditions: ['SameVC'],
+	runIn: [CommandOptionsRunTypeEnum.GuildText, CommandOptionsRunTypeEnum.GuildVoice]
 })
 export class UserCommand extends Command {
 	public override registerApplicationCommands(registry: Command.Registry) {
@@ -21,12 +22,12 @@ export class UserCommand extends Command {
 
 	@DJOnly()
 	public override async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
-        const volume = interaction.options.getNumber('volume', true);
-        const guildPlayer = this.container.queue.get(interaction.guildId!)!;
+		const volume = interaction.options.getNumber('volume', true);
+		const guildPlayer = this.container.queue.get(interaction.guildId!)!;
 
-        if (!guildPlayer) return interaction.reply({ content: 'There is no music playing in this server.', ephemeral: true });
-        await guildPlayer.setVolume(volume);
+		if (!guildPlayer) return interaction.reply({ content: 'There is no music playing in this server.', ephemeral: true });
+		await guildPlayer.setVolume(volume);
 
-        return interaction.reply({ content: `Set the volume to ${bold(volume.toString())}.` });
-    }
+		return interaction.reply({ content: `Set the volume to ${bold(volume.toString())}.` });
+	}
 }

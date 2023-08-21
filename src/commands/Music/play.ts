@@ -1,13 +1,13 @@
 import { DJOnly } from '#lib/decorators/DJOnly';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Command } from '@sapphire/framework';
+import { Command, CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { type GuildMember, TextChannel, type VoiceBasedChannel, bold } from 'discord.js';
 import { LoadType, type Playlist, type Track } from 'shoukaku';
 
 @ApplyOptions<Command.Options>({
 	description: 'Play a song',
 	aliases: ['p'],
-	preconditions: ['GuildVoiceOnly', 'GuildTextOnly']
+	runIn: [CommandOptionsRunTypeEnum.GuildText, CommandOptionsRunTypeEnum.GuildVoice]
 })
 export class UserCommand extends Command {
 	public override registerApplicationCommands(registry: Command.Registry) {

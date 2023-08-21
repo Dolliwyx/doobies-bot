@@ -1,10 +1,11 @@
 import { DJOnly } from '#lib/decorators/DJOnly';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Command } from '@sapphire/framework';
+import { Command, CommandOptionsRunTypeEnum } from '@sapphire/framework';
 
 @ApplyOptions<Command.Options>({
 	description: 'Leave the voice channel',
-	preconditions: ['SameVC', 'GuildVoiceOnly', 'GuildTextOnly']
+	preconditions: ['SameVC'],
+	runIn: [CommandOptionsRunTypeEnum.GuildText, CommandOptionsRunTypeEnum.GuildVoice]
 })
 export class UserCommand extends Command {
 	public override registerApplicationCommands(registry: Command.Registry) {

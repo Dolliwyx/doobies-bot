@@ -1,10 +1,11 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Command } from '@sapphire/framework';
+import { Command, CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import type { GuildMember } from 'discord.js';
 
 @ApplyOptions<Command.Options>({
 	description: 'Stops the music, and clears the queue.',
-	preconditions: ['SameVC', 'GuildVoiceOnly', 'GuildTextOnly']
+	preconditions: ['SameVC'],
+	runIn: [CommandOptionsRunTypeEnum.GuildText, CommandOptionsRunTypeEnum.GuildVoice]
 })
 export class UserCommand extends Command {
 	public override registerApplicationCommands(registry: Command.Registry) {
