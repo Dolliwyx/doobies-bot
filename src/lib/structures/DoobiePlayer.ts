@@ -57,7 +57,7 @@ export class DoobiePlayer {
 					await this.textChannel!.send({ content: `Finished playing: ${bold(data.track.info.title)} by ${data.track.info.author}` });
 					this.queue.shift();
 					if (this.queue.length) {
-						this.play();
+						await this.play();
 					} else {
 						await this.textChannel?.send({ content: 'Queue is empty.' });
 						this.isPlaying = false;
@@ -101,7 +101,7 @@ export class DoobiePlayer {
 		await this.player?.stopTrack();
 		this.queue.shift();
 		if (this.queue.length) {
-			this.play();
+			await this.play();
 		} else {
 			this.isPlaying = false;
 		}
