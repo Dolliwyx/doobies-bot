@@ -126,6 +126,12 @@ export class DoobiePlayer {
 		return this.shoukaku.leaveVoiceChannel(this.guild.id);
 	}
 
+	public async setVolume(volume: number) {
+		await this.player?.setGlobalVolume(20 * (volume / 100));
+		this.volume = volume;
+		return this.volume;
+	}
+
 	public getIdealNode() {
 		return this.shoukaku.getIdealNode();
 	}
