@@ -4,7 +4,7 @@ import { Command } from '@sapphire/framework';
 
 @ApplyOptions<Command.Options>({
 	description: 'Leave the voice channel',
-	preconditions: ['GuildVoiceOnly', 'SameVC']
+	preconditions: ['SameVC', 'GuildVoiceOnly', 'GuildTextOnly']
 })
 export class UserCommand extends Command {
 	public override registerApplicationCommands(registry: Command.Registry) {

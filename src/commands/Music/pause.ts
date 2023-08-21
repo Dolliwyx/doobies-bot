@@ -4,7 +4,7 @@ import { Command } from '@sapphire/framework';
 
 @ApplyOptions<Command.Options>({
 	description: 'Pause the current song',
-	preconditions: ['SameVC', 'GuildVoiceOnly']
+	preconditions: ['SameVC', 'GuildVoiceOnly', 'GuildTextOnly']
 })
 export class UserCommand extends Command {
 	public override registerApplicationCommands(registry: Command.Registry) {

@@ -4,7 +4,7 @@ import type { GuildMember } from 'discord.js';
 
 @ApplyOptions<Command.Options>({
 	description: 'Stops the music, and clears the queue.',
-	preconditions: ['SameVC', 'GuildVoiceOnly']
+	preconditions: ['SameVC', 'GuildVoiceOnly', 'GuildTextOnly']
 })
 export class UserCommand extends Command {
 	public override registerApplicationCommands(registry: Command.Registry) {

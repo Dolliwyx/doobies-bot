@@ -14,7 +14,7 @@ import { DJOnly } from '#lib/decorators/DJOnly';
 		{ name: 'remove', chatInputRun: 'interactionRemove' },
 		{ name: 'shuffle', chatInputRun: 'interactionShuffle' }
 	],
-	preconditions: ['SameVC', 'GuildVoiceOnly']
+	preconditions: ['SameVC', 'GuildVoiceOnly', 'GuildTextOnly']
 })
 export class UserCommand extends Subcommand {
 	public override registerApplicationCommands(registry: Subcommand.Registry) {
