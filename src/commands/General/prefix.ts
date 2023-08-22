@@ -1,11 +1,11 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Command } from '@sapphire/framework';
+import { Command, CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { inlineCode, type Message } from 'discord.js';
 
 @ApplyOptions<Command.Options>({
 	description: 'Get the prefix for this guild.',
-	preconditions: ['GuildOnly']
+	runIn: [CommandOptionsRunTypeEnum.GuildText]
 })
 export class UserCommand extends Command {
 	public override async messageRun(message: Message) {
