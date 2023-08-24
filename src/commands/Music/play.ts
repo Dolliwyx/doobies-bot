@@ -20,7 +20,7 @@ export class UserCommand extends Command {
 	}
 
 	public override async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
-		const maxRetries = 3
+		const maxRetries = 3;
 		let res;
 
 		await interaction.reply({ content: 'Searching...' });
@@ -47,7 +47,7 @@ export class UserCommand extends Command {
 			res = await node?.rest.resolve(query);
 			if (res) break;
 		}
-		
+
 		if (!res || [LoadType.ERROR, LoadType.EMPTY].includes(res.loadType))
 			return interaction.editReply({ content: 'No results were found for your query.' });
 

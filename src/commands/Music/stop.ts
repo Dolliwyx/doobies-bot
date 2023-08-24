@@ -17,7 +17,7 @@ export class UserCommand extends Command {
 		if (!guildPlayer) return interaction.reply({ content: 'There is no music playing in this server.', ephemeral: true });
 		if ((interaction.member as GuildMember).voice.channelId !== guildPlayer.voiceChannel?.id)
 			return interaction.reply({ content: 'You must be in the same voice channel to use this command.', ephemeral: true });
-		
+
 		await guildPlayer.stop();
 		guildPlayer.queue = [];
 		return interaction.reply({ content: 'Stopped the music and cleared the queue.' });
