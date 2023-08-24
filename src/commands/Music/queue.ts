@@ -40,7 +40,7 @@ export class UserCommand extends Subcommand {
 		if (!guildPlayer) return interaction.reply({ content: 'There is no music playing in this server.' });
 
 		const { queue } = guildPlayer;
-		if (queue.length > 10) {
+		if (queue.length > 15) {
 			const pages = chunk(queue, 15);
 			const paginatedMessage = new PaginatedMessage({
 				template: new EmbedBuilder().setColor('Random').setAuthor({ name: 'Current music queue', iconURL: interaction.guild?.iconURL()! })
@@ -52,7 +52,7 @@ export class UserCommand extends Subcommand {
 						.setDescription(
 							page
 								.map(
-									(song, index) => `${index + 1 + 10 * pageMultiplier}. ${bold(song.info.title)} by ${underscore(song.info.author)}`
+									(song, index) => `${index + 1 + 15 * pageMultiplier}. ${bold(song.info.title)} by ${underscore(song.info.author)}`
 								)
 								.join('\n')
 						)
