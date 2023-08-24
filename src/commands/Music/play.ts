@@ -49,9 +49,6 @@ export class UserCommand extends Command {
 			return interaction.editReply({ content: 'No available nodes. Try again later.' });
 		}
 
-		// Try to resolve the query 3 times, bad solution but it works
-		await node?.rest.resolve(query);
-		await node?.rest.resolve(query);
 		const res = await node?.rest.resolve(query);
 
 		if (!res || [LoadType.ERROR, LoadType.EMPTY].includes(res.loadType))
