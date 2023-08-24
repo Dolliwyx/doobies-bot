@@ -20,6 +20,9 @@ export class UserCommand extends Command {
 	}
 
 	public override async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
+		const maxRetries = 3
+		let res;
+
 		await interaction.reply({ content: 'Searching...' });
 
 		const guildPlayer = this.container.queue.add(interaction.guild!, interaction.user)!;
@@ -31,7 +34,7 @@ export class UserCommand extends Command {
 		try {
 			new URL(query);
 		} catch (error) {
-			query = `ytmsearch:${query}`;
+			query = `spsearch:${query}`;
 		}
 
 		const node = guildPlayer.getIdealNode();
@@ -40,7 +43,11 @@ export class UserCommand extends Command {
 			return interaction.editReply({ content: 'No available nodes. Try again later.' });
 		}
 
-		const res = await node?.rest.resolve(query);
+		for (let i = 0; i < maxRetries; i++) {
+			res = await node?.rest.resolve(query);
+			if (res) break;
+		}
+		
 		if (!res || [LoadType.ERROR, LoadType.EMPTY].includes(res.loadType))
 			return interaction.editReply({ content: 'No results were found for your query.' });
 
