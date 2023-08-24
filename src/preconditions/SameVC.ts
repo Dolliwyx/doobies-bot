@@ -1,11 +1,19 @@
 import { Precondition } from '@sapphire/framework';
-import type { CommandInteraction, GuildMember } from 'discord.js';
+import type { CommandInteraction, GuildMember, Message } from 'discord.js';
 
 export class UserPrecondition extends Precondition {
 	public override chatInputRun(interaction: CommandInteraction) {
 		const guildPlayer = this.container.queue.get(interaction.guildId!)!;
 		if (!guildPlayer) return this.error({ message: 'There is no music playing in this server.' });
 		if ((interaction.member as GuildMember).voice.channelId !== guildPlayer.voiceChannel?.id)
+			return this.error({ message: 'You must be in the same voice channel to use this command.' });
+		return this.ok();
+	}
+
+	public override messageRun(message: Message) {
+		const guildPlayer = this.container.queue.get(message.guildId!)!;
+		if (!guildPlayer) return this.error({ message: 'There is no music playing in this server.' });
+		if ((message.member as GuildMember).voice.channelId !== guildPlayer.voiceChannel?.id)
 			return this.error({ message: 'You must be in the same voice channel to use this command.' });
 		return this.ok();
 	}
