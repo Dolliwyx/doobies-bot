@@ -6,7 +6,6 @@ import { LoadType, type Playlist, type Track } from 'shoukaku';
 @ApplyOptions<Command.Options>({
 	description: 'Play a song',
 	aliases: ['p'],
-	preconditions: ['SameVC', 'DJOnly'],
 	runIn: [CommandOptionsRunTypeEnum.GuildText, CommandOptionsRunTypeEnum.GuildVoice]
 })
 export class UserCommand extends Command {
@@ -27,6 +26,16 @@ export class UserCommand extends Command {
 
 		const guildPlayer = this.container.queue.add(interaction.guild!, interaction.user)!;
 		let query = interaction.options.getString('query', true);
+
+		const {
+			music: { djs }
+		} = await this.container.settings.getUserSetting(guildPlayer.owner);
+
+		if (guildPlayer.owner !== interaction.user.id && !djs?.includes(interaction.user.id))
+			return interaction.reply({
+				content: 'The owner of this music session does not have you as a DJ. Have them add you using `/dj add`!',
+				ephemeral: true
+			});
 
 		if (guildPlayer.voiceChannel && (interaction.member as GuildMember).voice.channelId !== guildPlayer.voiceChannel?.id)
 			return interaction.editReply({ message: 'You must be in the same voice channel to use this command.' });
