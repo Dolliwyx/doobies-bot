@@ -3104,6 +3104,12 @@ shell-quote@^1.6.1:
   dependencies:
     ws "^8.13.0"
 
+"shoukaku@https://github.com/Deivu/Shoukaku.git":
+  version "4.0.0-dev"
+  resolved "https://github.com/Deivu/Shoukaku.git#30fcfc658f08e8d877e9aebee3106427aa994966"
+  dependencies:
+    ws "^8.13.0"
+
 side-channel@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/side-channel/-/side-channel-1.0.4.tgz#efce5c8fdc104ee751b25c58d4290011fa5ea2cf"
