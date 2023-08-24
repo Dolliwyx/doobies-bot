@@ -1,4 +1,3 @@
-import { ModOnly } from '#lib/decorators/ModOnly';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { Args } from '@sapphire/framework';
 import { Subcommand } from '@sapphire/plugin-subcommands';
@@ -9,9 +8,9 @@ import { EmbedBuilder, inlineCode, time, type Message, userMention } from 'disco
 	subcommands: [
 		{ name: 'show', chatInputRun: 'interactionShow', default: true },
 		{ name: 'info', chatInputRun: 'interactionInfo' },
-		{ name: 'create', messageRun: 'messageCreate' },
-		{ name: 'delete', messageRun: 'messageDelete' },
-		{ name: 'edit', messageRun: 'messageEdit' }
+		{ name: 'create', messageRun: 'messageCreate', preconditions: ['ModOnly'] },
+		{ name: 'delete', messageRun: 'messageDelete', preconditions: ['ModOnly'] },
+		{ name: 'edit', messageRun: 'messageEdit', preconditions: ['ModOnly'] }
 	]
 })
 export class UserCommand extends Subcommand {
@@ -81,7 +80,6 @@ export class UserCommand extends Subcommand {
 		});
 	}
 
-	@ModOnly()
 	public async messageCreate(message: Message, args: Args) {
 		const tagName = await args.pick('string').catch(() => null);
 		if (!tagName) return message.reply('You must provide a tag name.');
@@ -98,7 +96,6 @@ export class UserCommand extends Subcommand {
 		return message.reply(`Successfully created the tag ${inlineCode(tag.name)}`);
 	}
 
-	@ModOnly()
 	public async messageDelete(message: Message, args: Args) {
 		const tagName = await args.pick('string').catch(() => null);
 		if (!tagName) return message.reply('You must provide a tag name.');
@@ -114,7 +111,6 @@ export class UserCommand extends Subcommand {
 		return message.reply(`Successfully deleted the tag ${inlineCode(tagName)}`);
 	}
 
-	@ModOnly()
 	public async messageEdit(message: Message, args: Args) {
 		const tagName = await args.pick('string').catch(() => null);
 		if (!tagName) return message.reply('You must provide a tag name.');

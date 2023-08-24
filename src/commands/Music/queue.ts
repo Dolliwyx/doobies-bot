@@ -4,16 +4,15 @@ import { PaginatedMessage } from '@sapphire/discord.js-utilities';
 import { EmbedBuilder, bold, underscore } from 'discord.js';
 import { chunk } from '@sapphire/utilities';
 import { shuffleArray } from '#lib/utils';
-import { DJOnly } from '#lib/decorators/DJOnly';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 
 @ApplyOptions<Subcommand.Options>({
 	description: 'View and manage your current music queue.',
 	subcommands: [
 		{ name: 'view', default: true, chatInputRun: 'interactionView' },
-		{ name: 'clear', chatInputRun: 'interactionClear' },
-		{ name: 'remove', chatInputRun: 'interactionRemove' },
-		{ name: 'shuffle', chatInputRun: 'interactionShuffle' }
+		{ name: 'clear', chatInputRun: 'interactionClear', preconditions: ['DJOnly'] },
+		{ name: 'remove', chatInputRun: 'interactionRemove', preconditions: ['DJOnly'] },
+		{ name: 'shuffle', chatInputRun: 'interactionShuffle', preconditions: ['DJOnly'] }
 	],
 	preconditions: ['SameVC'],
 	runIn: [CommandOptionsRunTypeEnum.GuildText, CommandOptionsRunTypeEnum.GuildVoice]
@@ -78,7 +77,6 @@ export class UserCommand extends Subcommand {
 		});
 	}
 
-	@DJOnly()
 	public async interactionClear(interaction: Subcommand.ChatInputCommandInteraction) {
 		const guildPlayer = await this.container.queue.get(interaction.guildId!)!;
 
@@ -87,7 +85,6 @@ export class UserCommand extends Subcommand {
 		return interaction.reply({ content: 'The queue has been cleared.' });
 	}
 
-	@DJOnly()
 	public async interactionRemove(interaction: Subcommand.ChatInputCommandInteraction) {
 		const index = interaction.options.getNumber('index', true);
 		const guildPlayer = await this.container.queue.get(interaction.guildId!)!;
@@ -101,7 +98,6 @@ export class UserCommand extends Subcommand {
 		return interaction.reply({ content: `Removed ${bold(songToBeRemoved.info.title)} from the queue.` });
 	}
 
-	@DJOnly()
 	public async interactionShuffle(interaction: Subcommand.ChatInputCommandInteraction) {
 		const guildPlayer = await this.container.queue.get(interaction.guildId!)!;
 

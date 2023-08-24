@@ -1,4 +1,3 @@
-import { DJOnly } from '#lib/decorators/DJOnly';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command, CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { type GuildMember, TextChannel, type VoiceBasedChannel, bold } from 'discord.js';
@@ -7,6 +6,7 @@ import { LoadType, type Playlist, type Track } from 'shoukaku';
 @ApplyOptions<Command.Options>({
 	description: 'Play a song',
 	aliases: ['p'],
+	preconditions: ['SameVC', 'DJOnly'],
 	runIn: [CommandOptionsRunTypeEnum.GuildText, CommandOptionsRunTypeEnum.GuildVoice]
 })
 export class UserCommand extends Command {
@@ -19,7 +19,6 @@ export class UserCommand extends Command {
 		);
 	}
 
-	@DJOnly()
 	public override async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
 		await interaction.reply({ content: 'Searching...' });
 

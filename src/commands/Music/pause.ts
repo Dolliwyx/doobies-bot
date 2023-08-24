@@ -1,10 +1,9 @@
-import { DJOnly } from '#lib/decorators/DJOnly';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command, CommandOptionsRunTypeEnum } from '@sapphire/framework';
 
 @ApplyOptions<Command.Options>({
 	description: 'Pause the current song',
-	preconditions: ['SameVC'],
+	preconditions: ['SameVC', 'DJOnly'],
 	runIn: [CommandOptionsRunTypeEnum.GuildText, CommandOptionsRunTypeEnum.GuildVoice]
 })
 export class UserCommand extends Command {
@@ -12,7 +11,6 @@ export class UserCommand extends Command {
 		registry.registerChatInputCommand((builder) => builder.setName(this.name).setDescription(this.description));
 	}
 
-	@DJOnly()
 	public async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
 		const guildPlayer = this.container.queue.get(interaction.guildId!)!;
 

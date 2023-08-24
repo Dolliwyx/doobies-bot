@@ -1,11 +1,10 @@
-import { DJOnly } from '#lib/decorators/DJOnly';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command, CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { bold } from 'discord.js';
 
 @ApplyOptions<Command.Options>({
 	description: 'Adjust the volume of the music player.',
-	preconditions: ['SameVC'],
+	preconditions: ['SameVC', 'DJOnly'],
 	runIn: [CommandOptionsRunTypeEnum.GuildText, CommandOptionsRunTypeEnum.GuildVoice]
 })
 export class UserCommand extends Command {
@@ -20,7 +19,6 @@ export class UserCommand extends Command {
 		);
 	}
 
-	@DJOnly()
 	public override async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
 		const volume = interaction.options.getNumber('volume', true);
 		const guildPlayer = this.container.queue.get(interaction.guildId!)!;
