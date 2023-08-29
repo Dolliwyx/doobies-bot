@@ -55,7 +55,7 @@ export class UserCommand extends Command {
 			for (let retry = 0; retry < maxRetries; retry++) {
 				await interaction.editReply({ content: `Found no results, retrying... (${retry + 1}/${maxRetries})` });
 				const res = await node?.rest.resolve(query);
-				if (![LoadType.ERROR, LoadType.EMPTY].includes(res!.loadType)) break;
+				if (res && ![LoadType.ERROR, LoadType.EMPTY].includes(res!.loadType)) break;
 			}
 		}
 
