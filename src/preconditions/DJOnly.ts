@@ -1,5 +1,5 @@
 import { Precondition } from '@sapphire/framework';
-import type { Interaction, Message } from 'discord.js';
+import { userMention, type Interaction, type Message } from 'discord.js';
 
 export class UserPrecondition extends Precondition {
 	public override async chatInputRun(interaction: Interaction) {
@@ -11,7 +11,9 @@ export class UserPrecondition extends Precondition {
 
 		if (guildPlayer.owner !== interaction.user.id && !djs?.includes(interaction.user.id)) {
 			return this.error({
-				message: 'The owner of this music session does not have you as a DJ. Have them add you using `/dj add`!',
+				message: `The owner of this music session ${userMention(
+					guildPlayer.owner
+				)} does not have you as a DJ. Have them add you using \`/dj add\`!`,
 				identifier: 'PermissionsMissing'
 			});
 		}
