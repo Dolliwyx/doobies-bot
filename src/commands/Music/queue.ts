@@ -44,7 +44,7 @@ export class UserCommand extends Subcommand {
 	}
 
 	public async interactionView(interaction: Subcommand.ChatInputCommandInteraction) {
-		const guildPlayer = await this.container.queue.get(interaction.guildId!);
+		const guildPlayer = this.container.queue.get(interaction.guildId!);
 		if (!guildPlayer) return interaction.reply({ content: 'There is no music playing in this server.' });
 
 		const { queue } = guildPlayer;
@@ -86,7 +86,7 @@ export class UserCommand extends Subcommand {
 	}
 
 	public async interactionClear(interaction: Subcommand.ChatInputCommandInteraction) {
-		const guildPlayer = await this.container.queue.get(interaction.guildId!)!;
+		const guildPlayer = this.container.queue.get(interaction.guildId!)!;
 
 		if (!guildPlayer) return interaction.reply({ content: 'There is no music playing in this server.', ephemeral: true });
 		guildPlayer.queue = [];
@@ -95,7 +95,7 @@ export class UserCommand extends Subcommand {
 
 	public async interactionRemove(interaction: Subcommand.ChatInputCommandInteraction) {
 		const index = interaction.options.getNumber('index', true);
-		const guildPlayer = await this.container.queue.get(interaction.guildId!)!;
+		const guildPlayer = this.container.queue.get(interaction.guildId!)!;
 
 		if (!guildPlayer) return interaction.reply({ content: 'There is no music playing in this server.', ephemeral: true });
 
@@ -107,7 +107,7 @@ export class UserCommand extends Subcommand {
 	}
 
 	public async interactionShuffle(interaction: Subcommand.ChatInputCommandInteraction) {
-		const guildPlayer = await this.container.queue.get(interaction.guildId!)!;
+		const guildPlayer = this.container.queue.get(interaction.guildId!)!;
 
 		if (!guildPlayer) return interaction.reply({ content: 'There is no music playing in this server.', ephemeral: true });
 
