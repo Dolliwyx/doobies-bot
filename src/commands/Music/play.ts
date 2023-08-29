@@ -50,6 +50,15 @@ export class UserCommand extends Command {
 
 		const res = await node?.rest.resolve(query);
 
+		if (res?.loadType === LoadType.ERROR) {
+			const maxRetries = 3;
+			for (let retry = 0; retry < maxRetries; retry++) {
+				await interaction.editReply({ content: `Found no results, retrying... (${retry + 1}/${maxRetries})` });
+				const res = await node?.rest.resolve(query);
+				if (res || ![LoadType.ERROR, LoadType.EMPTY].includes(res!.loadType)) break;
+			}
+		}
+
 		if (!res || [LoadType.ERROR, LoadType.EMPTY].includes(res.loadType))
 			return interaction.editReply({ content: 'No results were found for your query.' });
 
