@@ -29,9 +29,8 @@ export class UserCommand extends Command {
 		} = await this.container.settings.getUserSetting(guildPlayer.owner);
 
 		if (guildPlayer.owner !== interaction.user.id && !djs?.includes(interaction.user.id))
-			return interaction.reply({
-				content: 'The owner of this music session does not have you as a DJ. Have them add you using `/dj add`!',
-				ephemeral: true
+			return interaction.editReply({
+				content: 'The owner of this music session does not have you as a DJ. Have them add you using `/dj add`!'
 			});
 
 		if (guildPlayer.voiceChannel && (interaction.member as GuildMember).voice.channelId !== guildPlayer.voiceChannel?.id)
