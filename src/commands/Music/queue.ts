@@ -12,7 +12,8 @@ import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 		{ name: 'view', default: true, chatInputRun: 'interactionView' },
 		{ name: 'clear', chatInputRun: 'interactionClear', preconditions: ['DJOnly'] },
 		{ name: 'remove', chatInputRun: 'interactionRemove', preconditions: ['DJOnly'] },
-		{ name: 'shuffle', chatInputRun: 'interactionShuffle', preconditions: ['DJOnly'] }
+		{ name: 'shuffle', chatInputRun: 'interactionShuffle', preconditions: ['DJOnly'] },
+		{ name: 'move', chatInputRun: 'interactionMove', preconditions: ['DJOnly'] }
 	],
 	preconditions: ['SameVC'],
 	runIn: [CommandOptionsRunTypeEnum.GuildText, CommandOptionsRunTypeEnum.GuildVoice]
@@ -31,6 +32,13 @@ export class UserCommand extends Subcommand {
 						.setName('remove')
 						.setDescription('Remove a song from your current music queue.')
 						.addNumberOption((option) => option.setName('index').setDescription('The index of the song to remove.').setRequired(true))
+				)
+				.addSubcommand((subcommand) =>
+					subcommand
+						.setName('move')
+						.setDescription('Move a song in your current music queue.')
+						.addNumberOption((option) => option.setName('index').setDescription('The index of the song to move.').setRequired(true))
+						.addNumberOption((option) => option.setName('newIndex').setDescription('The new index of the song.').setRequired(true))
 				)
 		);
 	}
@@ -111,5 +119,20 @@ export class UserCommand extends Subcommand {
 		guildPlayer.queue.unshift(currentTrack);
 
 		return interaction.reply({ content: 'The queue has been shuffled.' });
+	}
+
+	public async interactionMove(interaction: Subcommand.ChatInputCommandInteraction) {
+		const index = interaction.options.getNumber('index', true);
+		const newIndex = interaction.options.getNumber('newIndex', true);
+		const guildPlayer = this.container.queue.get(interaction.guildId!)!;
+
+		if (!guildPlayer) return interaction.reply({ content: 'There is no music playing in this server.', ephemeral: true });
+
+		const songToBeMoved = guildPlayer.queue[index - 1];
+
+		guildPlayer.queue.splice(index - 1, 1);
+		guildPlayer.queue.splice(newIndex - 1, 0, songToBeMoved);
+
+		return interaction.reply({ content: `Moved ${bold(songToBeMoved.info.title)} to position ${newIndex}.` });
 	}
 }
