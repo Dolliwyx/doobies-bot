@@ -37,8 +37,12 @@ export class UserCommand extends Subcommand {
 					subcommand
 						.setName('move')
 						.setDescription('Move a song in your current music queue.')
-						.addNumberOption((option) => option.setName('index').setDescription('The index of the song to move.').setRequired(true))
-						.addNumberOption((option) => option.setName('new_index').setDescription('The new index of the song.').setRequired(true))
+						.addNumberOption((option) =>
+							option.setName('index').setDescription('The index of the song to move.').setRequired(true).setMinValue(2)
+						)
+						.addNumberOption((option) =>
+							option.setName('new_index').setDescription('The new index of the song.').setRequired(true).setMinValue(2)
+						)
 				)
 		);
 	}
@@ -123,8 +127,14 @@ export class UserCommand extends Subcommand {
 
 	public async interactionMove(interaction: Subcommand.ChatInputCommandInteraction) {
 		const index = interaction.options.getNumber('index', true);
-		const newIndex = interaction.options.getNumber('newIndex', true);
+		const newIndex = interaction.options.getNumber('new_index', true);
 		const guildPlayer = this.container.queue.get(interaction.guildId!)!;
+
+		// validate index and newIndex
+		if (index <= 1 || index > guildPlayer.queue.length)
+			return interaction.reply({ content: 'The index must be between 2 and the length of the queue.', ephemeral: true });
+		if (newIndex <= 1 || newIndex > guildPlayer.queue.length)
+			return interaction.reply({ content: 'The new index must be between 2 and the length of the queue.', ephemeral: true });
 
 		if (!guildPlayer) return interaction.reply({ content: 'There is no music playing in this server.', ephemeral: true });
 
