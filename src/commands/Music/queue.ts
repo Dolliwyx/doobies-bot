@@ -38,7 +38,7 @@ export class UserCommand extends Subcommand {
 						.setName('move')
 						.setDescription('Move a song in your current music queue.')
 						.addNumberOption((option) => option.setName('index').setDescription('The index of the song to move.').setRequired(true))
-						.addNumberOption((option) => option.setName('newIndex').setDescription('The new index of the song.').setRequired(true))
+						.addNumberOption((option) => option.setName('new_index').setDescription('The new index of the song.').setRequired(true))
 				)
 		);
 	}
