@@ -55,19 +55,7 @@ export class DoobiePlayer {
 				}
 				if (data.reason === 'finished') {
 					await this.textChannel!.send({ content: `Finished playing: ${bold(data.track.info.title)} by ${data.track.info.author}` });
-					this.queue.shift();
-					if (this.queue.length) {
-						await this.play();
-					} else {
-						await this.textChannel?.send({ content: 'Queue is empty.' });
-						this.isPlaying = false;
-						setTimeout(
-							async () => {
-								if (!this.queue.length) await this.disconnect();
-							},
-							1000 * 60 * 5
-						);
-					}
+					await this.skip();
 				}
 			})
 			.on('closed', async () => {
@@ -103,7 +91,14 @@ export class DoobiePlayer {
 		if (this.queue.length) {
 			await this.play();
 		} else {
+			await this.textChannel?.send({ content: 'Queue is empty. Disconnecting after 5 minutes of inactivity.' });
 			this.isPlaying = false;
+			setTimeout(
+				async () => {
+					if (!this.queue.length) await this.disconnect();
+				},
+				1000 * 60 * 5
+			);
 		}
 		return this.isPlaying;
 	}
