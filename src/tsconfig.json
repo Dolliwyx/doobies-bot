@@ -1,0 +1,24 @@
+{
+    "extends": "../tsconfig.base.json",
+    "compilerOptions": {
+        "baseUrl": ".",
+        "outDir": "../dist",
+        "rootDir": ".",
+        "paths": {
+            "#lib/*": [
+                "lib/*"
+            ],
+            "#root/*": [
+                "*"
+            ]
+        },
+        "composite": true
+    },
+    "include": [
+        ".",
+        "./**/*.json"
+    ],
+    "exclude": [
+        "./tsconfig.json"
+    ]
+}
