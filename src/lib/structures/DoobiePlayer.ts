@@ -1,5 +1,5 @@
 import { Resolvers, SapphireClient, container } from '@sapphire/framework';
-import { bold, type Guild, type TextChannel, type VoiceBasedChannel } from 'discord.js';
+import { bold, underscore, type Guild, type TextChannel, type VoiceBasedChannel } from 'discord.js';
 import type { Shoukaku, Track } from 'shoukaku';
 
 export class DoobiePlayer {
@@ -42,9 +42,9 @@ export class DoobiePlayer {
 			.on('start', async (data) => {
 				const [{ requester }] = this.queue;
 				return this.textChannel!.send({
-					content: `Now playing: ${bold(data.track.info.title)} by ${data.track.info.author} [Requested by: ${await this.resolveUser(
-						requester
-					)}]`,
+					content: `Now playing: ${bold(data.track.info.title)} by ${underscore(
+						data.track.info.author
+					)} [Requested by: ${await this.resolveUser(requester)}]`,
 					allowedMentions: { parse: [] }
 				});
 			})
@@ -54,7 +54,7 @@ export class DoobiePlayer {
 					await this.skip();
 				}
 				if (data.reason === 'finished') {
-					await this.textChannel!.send({ content: `Finished playing: ${bold(data.track.info.title)} by ${data.track.info.author}` });
+					// await this.textChannel!.send({ content: `Finished playing: ${bold(data.track.info.title)} by ${data.track.info.author}` });
 					await this.skip();
 				}
 			})
@@ -95,7 +95,10 @@ export class DoobiePlayer {
 			this.isPlaying = false;
 			setTimeout(
 				async () => {
-					if (!this.queue.length) await this.disconnect();
+					if (!this.queue.length) {
+						await this.textChannel?.send({ content: 'Disconnected due to inactivity.' });
+						await this.disconnect();
+					}
 				},
 				1000 * 60 * 5
 			);
