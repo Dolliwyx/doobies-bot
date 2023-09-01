@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command, CommandOptionsRunTypeEnum } from '@sapphire/framework';
-import { type GuildMember, TextChannel, type VoiceBasedChannel, bold } from 'discord.js';
+import { type GuildMember, TextChannel, type VoiceBasedChannel, bold, underscore } from 'discord.js';
 import { LoadType, type Playlist, type Track } from 'shoukaku';
 
 @ApplyOptions<Command.Options>({
@@ -81,17 +81,17 @@ export class UserCommand extends Command {
 			track = res.data;
 			for (const resolvedTrack of track.tracks) resolvedTrack.requester = interaction.user.id;
 			guildPlayer.queue.push(...track.tracks);
-			await interaction.editReply({ content: `Added to queue: ${bold(track.info.name)}` });
+			await interaction.editReply({ content: `Added playlist to queue: ${bold(track.info.name)}` });
 		} else if (res.loadType === LoadType.TRACK) {
 			track = res.data;
 			track.requester = interaction.user.id;
 			guildPlayer.queue.push(track);
-			await interaction.editReply({ content: `Added to queue: ${bold(track.info.title)}` });
+			await interaction.editReply({ content: `Added to queue: ${bold(track.info.title)} by ${underscore(track.info.author)}` });
 		} else if (res.loadType === LoadType.SEARCH) {
 			[track] = res.data;
 			track.requester = interaction.user.id;
 			guildPlayer.queue.push(track);
-			await interaction.editReply({ content: `Added to queue: ${bold(track.info.title)}` });
+			await interaction.editReply({ content: `Added to queue: ${bold(track.info.title)} by ${underscore(track.info.author)}` });
 		}
 
 		if (guildPlayer.isPlaying) return;
