@@ -1,5 +1,4 @@
-import type { UserSettings } from '#lib/types/UserSettings';
-import type { GuildSettings } from '#lib/types/GuildSettings';
+import type { UserSettings, GuildSettings } from '#lib/types/index';
 
 export const defaultUserSettings: UserSettings = {
 	money: {
