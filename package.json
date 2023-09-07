@@ -22,6 +22,7 @@
 		"@sapphire/fetch": "^2.4.1",
 		"@sapphire/framework": "^4.5.2",
 		"@sapphire/plugin-editable-commands": "^3.0.2",
+		"@sapphire/plugin-hmr": "^2.0.2",
 		"@sapphire/plugin-logger": "^3.0.5",
 		"@sapphire/plugin-subcommands": "^4.2.1",
 		"@sapphire/time-utilities": "^1.7.10",
@@ -56,8 +57,8 @@
 		"build": "tsup",
 		"watch": "tsup --watch",
 		"start": "node --preserve-symlinks --enable-source-maps dist/index.js",
-		"dev": "run-s build start",
-		"watch:start": "tsc-watch --onSuccess \"node ./dist/index.js\"",
+		"dev": "run-p watch:tsc start",
+		"watch:tsc": "tsc -p src/tsconfig.json --watch",
 		"format": "prettier --write \"src/**/*.ts\"",
 		"commitlint": "commitlint --edit"
 	},
