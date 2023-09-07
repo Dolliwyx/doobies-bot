@@ -1,6 +1,8 @@
 import { mergeDefault } from '@sapphire/utilities';
 import Keyv from 'keyv';
-import { defaultGuildSettings, defaultUserSettings, type GuildSettings, type UserSettings } from '#lib/common/defaultSettings';
+import { defaultGuildSettings, defaultUserSettings } from '#lib/common/defaultSettings';
+import type { GuildSettings } from '#lib/types/GuildSettings';
+import type { UserSettings } from '#lib/types/UserSettings';
 
 export class Settings {
 	public path: URL;

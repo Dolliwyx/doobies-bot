@@ -1,3 +1,6 @@
+import type { UserSettings } from '#lib/types/UserSettings';
+import type { GuildSettings } from '#lib/types/GuildSettings';
+
 export const defaultUserSettings: UserSettings = {
 	money: {
 		balance: 0,
@@ -37,65 +40,3 @@ export const defaultGuildSettings: GuildSettings = {
 	},
 	tags: []
 };
-
-export interface GuildSettings {
-	prefix: string;
-	welcome: Partial<Welcome>;
-	tags: Partial<Tag[]>;
-}
-
-export interface Welcome {
-	enabled: boolean;
-	channelId: string;
-	message: string;
-}
-
-export interface Tag {
-	name: string;
-	content: string;
-	author: string;
-	createdAt: number;
-	updatedAt: number;
-}
-
-export interface UserSettings {
-	money: Partial<Money>;
-	pet: Partial<Pet>;
-	music: Partial<Music>;
-}
-
-export interface Money {
-	balance: number;
-	lastClaimedDaily: number;
-}
-
-export interface Pet {
-	name: string;
-	level: number;
-	exp: number;
-	expToNextLevel: number;
-	cosmetics: Partial<Cosmetic>;
-}
-
-export interface Cosmetic {
-	owned: Partial<OwnedCosmetics>;
-	equipped: Partial<EquippedCosmetics>;
-}
-
-export interface OwnedCosmetics {
-	hats: string[];
-	eyewears: string[];
-	outfits: string[];
-	sets: string[];
-}
-
-export interface EquippedCosmetics {
-	hat: string;
-	eyewear: string;
-	outfit: string;
-	sets: string;
-}
-
-export interface Music {
-	djs: string[];
-}
