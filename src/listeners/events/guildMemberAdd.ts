@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener } from '@sapphire/framework';
-import { AttachmentBuilder, EmbedBuilder, Events, GuildMember, bold, type TextBasedChannel } from 'discord.js';
+import { AttachmentBuilder, EmbedBuilder, Events, GuildMember, type TextBasedChannel } from 'discord.js';
 import { getImage } from '#lib/utils';
 import { assetDir } from '#lib/common/constants';
 import { Canvas, loadFont, loadImage } from 'canvas-constructor/napi-rs';
@@ -65,16 +65,14 @@ export class UserEvent extends Listener {
 
 		const attachment = new AttachmentBuilder(await canvas, { name: 'welcome.webp' });
 
-		const embed = new EmbedBuilder()
-			.setColor('#E3F2FF')
-			.setImage('attachment://welcome.webp')
-			.setDescription(
+		const embed = new EmbedBuilder().setColor('#E3F2FF').setImage('attachment://welcome.webp');
+		/* .setDescription(
 				[
 					`${bold('welcome to doobies')}\n`,
 					'check out the server rules over at <#1031459803949707355> and get yourself some roles over at <#1031459841333526578>!\n',
 					'thank you for joining and we hope you have a great stay'
 				].join('\n')
-			);
+			); */
 
 		return (member.guild.channels.cache.get(guildSettings.welcome.channelId) as TextBasedChannel).send({
 			content: `hey ${member.user}!`,
