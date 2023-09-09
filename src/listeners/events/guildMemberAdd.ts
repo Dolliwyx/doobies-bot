@@ -1,10 +1,10 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener } from '@sapphire/framework';
 import { AttachmentBuilder, EmbedBuilder, Events, GuildMember, type TextBasedChannel } from 'discord.js';
-import { getImage } from '#lib/utils';
 import { assetDir } from '#lib/common/constants';
 import { Canvas, loadFont, loadImage } from 'canvas-constructor/napi-rs';
 import { request } from 'undici';
+import { fileURLToPath } from 'url';
 
 loadFont(new URL('fonts/bubbleboddy.fat.ttf', assetDir).pathname, 'Bubbleboddy Fat');
 
@@ -19,7 +19,7 @@ export class UserEvent extends Listener {
 			height = 514,
 			middleY = height / 2;
 
-		const background = await getImage(new URL('images/defaultBanner.jpg', assetDir).pathname);
+		const background = await loadImage(fileURLToPath(new URL('images/defaultBanner.jpg', assetDir)));
 		const memberCount = member.guild.memberCount.toLocaleString();
 
 		// Use proper suffix for memberCount unless it's 11, 12, or 13
