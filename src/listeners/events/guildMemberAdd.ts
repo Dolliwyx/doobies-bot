@@ -15,8 +15,8 @@ export class UserEvent extends Listener {
 	public override async run(member: GuildMember) {
 		const guildSettings = await this.container.settings.getGuildSetting(member.guild.id);
 		if (!(guildSettings.welcome?.enabled && guildSettings.welcome?.channelId)) return;
-		const width = 1200,
-			height = 514,
+		const width = 800,
+			height = 500,
 			middleY = height / 2,
 			middleX = width / 2;
 
