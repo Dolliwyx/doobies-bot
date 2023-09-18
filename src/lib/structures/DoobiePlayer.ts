@@ -51,12 +51,9 @@ export class DoobiePlayer {
 			.on('end', async (data) => {
 				if (data.reason === 'loadFailed') {
 					await this.textChannel!.send({ content: `Failed to load track: ${data.track.info.title}. Skipping...` });
-					await this.skip();
+					return this.skip();
 				}
-				if (data.reason === 'finished') {
-					// await this.textChannel!.send({ content: `Finished playing: ${bold(data.track.info.title)} by ${data.track.info.author}` });
-					await this.skip();
-				}
+				return this.skip()
 			})
 			.on('closed', async () => {
 				await this.disconnect();
