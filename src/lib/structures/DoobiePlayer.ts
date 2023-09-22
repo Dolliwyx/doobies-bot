@@ -48,12 +48,14 @@ export class DoobiePlayer {
 					allowedMentions: { parse: [] }
 				});
 			})
+			.on('stuck', (data) => container.logger.error('PLAYER STUCK', data))
+			.on('exception', (data) => container.logger.error('PLAYER ERROR', data))
 			.on('end', async (data) => {
 				if (data.reason === 'loadFailed') {
 					await this.textChannel!.send({ content: `Failed to load track: ${data.track.info.title}. Skipping...` });
 					return this.skip();
 				}
-				return this.skip()
+				return this.skip();
 			})
 			.on('closed', async () => {
 				await this.disconnect();
@@ -122,8 +124,9 @@ export class DoobiePlayer {
 	}
 
 	public async setVolume(volume: number) {
-		await this.player?.setGlobalVolume(20 * (volume / 100));
-		this.volume = volume;
+		const actualVol = Math.ceil(20 * (volume / 100));
+		await this.player?.setGlobalVolume(actualVol);
+		this.volume = actualVol;
 		return this.volume;
 	}
 
