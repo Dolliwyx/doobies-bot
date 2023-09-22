@@ -33,7 +33,7 @@
 		"colorette": "^2.0.20",
 		"discord.js": "^14.13.0",
 		"keyv": "^4.5.3",
-		"shoukaku": "https://github.com/Deivu/Shoukaku.git",
+		"shoukaku": "github:deivu/Shoukaku",
 		"undici": "^5.23.0"
 	},
 	"devDependencies": {
@@ -67,6 +67,5 @@
 			"@commitlint/config-conventional"
 		]
 	},
-	"prettier": "@sapphire/prettier-config",
-	"packageManager": "yarn@3.6.3"
+	"prettier": "@sapphire/prettier-config"
 }
