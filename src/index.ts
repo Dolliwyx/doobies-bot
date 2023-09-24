@@ -15,8 +15,8 @@ container.shoukaku = new Shoukaku(
 		}
 	],
 	{
-		restTimeout: 10000,
-		reconnectInterval: 3000,
+		restTimeout: 10,
+		reconnectInterval: 3,
 		reconnectTries: 2
 	}
 );
