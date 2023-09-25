@@ -73,7 +73,7 @@ export class DoobiePlayer {
 	public async play() {
 		const [song] = this.queue;
 		if (this.paused) return this.resume();
-		await this.player?.playTrack({ track: song.encoded, options: { volume: this.volume } });
+		await this.player?.playTrack({ track: song.encoded, options: { volume: this.volume } }).catch(async () => await this.play());
 		this.isPlaying = true;
 		return this.isPlaying;
 	}
