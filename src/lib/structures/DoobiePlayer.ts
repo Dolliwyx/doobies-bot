@@ -75,6 +75,7 @@ export class DoobiePlayer {
 		if (this.paused) return this.resume();
 		await this.player?.playTrack({ track: song.encoded, options: { volume: this.volume } }).catch(async (error) => {
 			container.logger.error(error);
+			await this.textChannel?.send({ content: `An error occured while playing the track: ${error.message}. Retrying..` });
 			await this.play();
 		});
 		this.isPlaying = true;
