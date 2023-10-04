@@ -16,7 +16,9 @@ export class UserCommand extends Command {
 
 		if (!guildPlayer) return interaction.reply({ content: 'There is no music playing in this server.', ephemeral: true });
 
-		await guildPlayer.skip();
+		guildPlayer.skip();
+
+		await guildPlayer.play()
 
 		return interaction.reply({ content: 'Skipped the current song.' });
 	}
