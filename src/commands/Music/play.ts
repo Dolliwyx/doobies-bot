@@ -1,5 +1,6 @@
+import type { DoobiePlayer } from '#lib/structures/DoobiePlayer.js';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Command, CommandOptionsRunTypeEnum } from '@sapphire/framework';
+import { Command, CommandOptionsRunTypeEnum, Resolvers } from '@sapphire/framework';
 import { type GuildMember, TextChannel, type VoiceBasedChannel, bold, underscore } from 'discord.js';
 import { LoadType, type Playlist, type Track } from 'shoukaku';
 
@@ -66,7 +67,7 @@ export class UserCommand extends Command {
 		const member = interaction.member as GuildMember;
 		if (!member.voice.channelId) return interaction.editReply({ content: 'You must be in a voice channel to use this command.' });
 
-		if (!guildPlayer.voiceChannel) await guildPlayer.join(member.voice.channel!);
+		if (!guildPlayer.player) await this.join(guildPlayer, member.voice.channel!);
 
 		if (member.voice.channelId !== guildPlayer.voiceChannel!.id)
 			return interaction.editReply({ content: 'You must be in the same voice channel to use this command.' });
@@ -96,6 +97,44 @@ export class UserCommand extends Command {
 
 		if (guildPlayer.isPlaying) return;
 		return guildPlayer.play();
+	}
+
+	public async join(guildPlayer: DoobiePlayer, channel: VoiceBasedChannel) {
+		const player = await guildPlayer.join(channel);
+
+		player
+			.on('start', async (data) => {
+				const [{ requester }] = guildPlayer.queue;
+				return guildPlayer.textChannel!.send({
+					content: `Now playing: ${bold(data.track.info.title)} by ${underscore(
+						data.track.info.author
+					)} [Requested by: ${await this.resolveUser(requester)}]`,
+					allowedMentions: { parse: [] }
+				});
+			})
+			.on('stuck', (data) => this.container.logger.error('PLAYER STUCK', data))
+			.on('exception', (data) => this.container.logger.error('PLAYER ERROR', data))
+			.on('end', async (data) => {
+				if (data.reason === 'loadFailed') {
+					await guildPlayer.textChannel!.send({ content: `Failed to load track: ${data.track.info.title}. Skipping...` });
+					return guildPlayer.skip();
+				}
+				return guildPlayer.skip();
+			})
+			.on('closed', async () => {
+				await guildPlayer.disconnect();
+				return guildPlayer.textChannel?.send({ content: 'I am disconnected from the voice channel.' });
+			})
+			.on('exception', async (data) => {
+				return guildPlayer.textChannel?.send({
+					content: `An error occured while playing the track: ${data.exception.message} (TYPE: ${data.type}))`
+				});
+			});
+	}
+
+	private async resolveUser(id: string) {
+		const result = await Resolvers.resolveUser(id);
+		return result.isOk() ? result.unwrap() : null;
 	}
 
 	/* public override async messageRun(message: Message, args: Args) {

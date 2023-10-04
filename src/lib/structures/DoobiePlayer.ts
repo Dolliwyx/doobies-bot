@@ -1,5 +1,5 @@
-import { Resolvers, SapphireClient, container } from '@sapphire/framework';
-import { bold, underscore, type Guild, type TextChannel, type VoiceBasedChannel } from 'discord.js';
+import { SapphireClient, container } from '@sapphire/framework';
+import { type Guild, type TextChannel, type VoiceBasedChannel } from 'discord.js';
 import type { Shoukaku, Track } from 'shoukaku';
 
 export class DoobiePlayer {
@@ -30,54 +30,32 @@ export class DoobiePlayer {
 
 	public async join(channel: VoiceBasedChannel) {
 		this.voiceChannel = channel;
-		const player = await this.shoukaku.joinVoiceChannel({
+		return this.shoukaku.joinVoiceChannel({
 			guildId: channel.guildId,
 			channelId: channel.id!,
 			shardId: 0,
 			deaf: true,
 			mute: false
 		});
-
-		player
-			.on('start', async (data) => {
-				const [{ requester }] = this.queue;
-				return this.textChannel!.send({
-					content: `Now playing: ${bold(data.track.info.title)} by ${underscore(
-						data.track.info.author
-					)} [Requested by: ${await this.resolveUser(requester)}]`,
-					allowedMentions: { parse: [] }
-				});
-			})
-			.on('stuck', (data) => container.logger.error('PLAYER STUCK', data))
-			.on('exception', (data) => container.logger.error('PLAYER ERROR', data))
-			.on('end', async (data) => {
-				if (data.reason === 'loadFailed') {
-					await this.textChannel!.send({ content: `Failed to load track: ${data.track.info.title}. Skipping...` });
-					return this.skip();
-				}
-				return this.skip();
-			})
-			.on('closed', async () => {
-				await this.disconnect();
-				return this.textChannel?.send({ content: 'I am disconnected from the voice channel.' });
-			})
-			.on('exception', async (data) => {
-				return this.textChannel?.send({
-					content: `An error occured while playing the track: ${data.exception.message} (TYPE: ${data.type}))`
-				});
-			});
-
-		return player;
 	}
 
 	public async play() {
 		const [song] = this.queue;
 		if (this.paused) return this.resume();
-		await this.player?.playTrack({ track: song.encoded, options: { volume: this.volume } }).catch(async (error) => {
-			container.logger.error(error);
-			await this.textChannel?.send({ content: `An error occured while playing the track: ${error.message}. Retrying..` });
-			await this.play();
-		});
+		for (let i = 0; i < 3; i++) {
+			if (i === 2) {
+				await this.textChannel?.send({ content: 'Failed to play the track. Skipping...' });
+				return this.skip();
+			}
+
+			try {
+				await this.player?.playTrack({ track: song.encoded, options: { volume: this.volume } });
+				break;
+			} catch (error) {
+				container.logger.error(error);
+				continue;
+			}
+		}
 		this.isPlaying = true;
 		return this.isPlaying;
 	}
@@ -140,10 +118,5 @@ export class DoobiePlayer {
 
 	public get player() {
 		return this.shoukaku.players.get(this.guild.id) || null;
-	}
-
-	private async resolveUser(id: string) {
-		const result = await Resolvers.resolveUser(id);
-		return result.isOk() ? result.unwrap() : null;
 	}
 }
