@@ -53,8 +53,8 @@ export class UserCommand extends Command {
 
 		if (res?.loadType === LoadType.ERROR) {
 			const maxRetries = 3;
+			await interaction.editReply({ content: `Found no results, retrying...` });
 			for (let retry = 0; retry < maxRetries; retry++) {
-				await interaction.editReply({ content: `Found no results, retrying... (${retry + 1}/${maxRetries})` });
 				res = await node?.rest.resolve(query);
 				if (!res || [LoadType.ERROR, LoadType.EMPTY].includes(res.loadType)) continue;
 				else break;
@@ -78,21 +78,27 @@ export class UserCommand extends Command {
 
 		let track: Track | Playlist;
 
-		if (res.loadType === LoadType.PLAYLIST) {
-			track = res.data;
-			for (const resolvedTrack of track.tracks) resolvedTrack.requester = interaction.user.id;
-			guildPlayer.queue.push(...track.tracks);
-			await interaction.editReply({ content: `Added playlist to queue: ${bold(track.info.name)}` });
-		} else if (res.loadType === LoadType.TRACK) {
-			track = res.data;
-			track.requester = interaction.user.id;
-			guildPlayer.queue.push(track);
-			await interaction.editReply({ content: `Added to queue: ${bold(track.info.title)} by ${underscore(track.info.author)}` });
-		} else if (res.loadType === LoadType.SEARCH) {
-			[track] = res.data;
-			track.requester = interaction.user.id;
-			guildPlayer.queue.push(track);
-			await interaction.editReply({ content: `Added to queue: ${bold(track.info.title)} by ${underscore(track.info.author)}` });
+		switch(res.loadType) {
+			case LoadType.SEARCH:
+				[track] = res.data;
+				track.requester = interaction.user.id;
+				guildPlayer.queue.push(track);
+				await interaction.editReply({ content: `Added to queue: ${bold(track.info.title)} by ${underscore(track.info.author)}` });
+				break;
+			case LoadType.TRACK:
+				track = res.data;
+				track.requester = interaction.user.id;
+				guildPlayer.queue.push(track);
+				await interaction.editReply({ content: `Added to queue: ${bold(track.info.title)} by ${underscore(track.info.author)}` });
+				break;
+			case LoadType.PLAYLIST:
+				track = res.data;
+				for (const resolvedTrack of track.tracks) resolvedTrack.requester = interaction.user.id;
+				guildPlayer.queue.push(...track.tracks);
+				await interaction.editReply({ content: `Added playlist to queue: ${bold(track.info.name)}` });
+				break;
+			default:
+				return interaction.editReply({ content: 'Something went wrong with your query. Please try again' });
 		}
 
 		if (guildPlayer.isPlaying) return;
@@ -117,9 +123,11 @@ export class UserCommand extends Command {
 			.on('end', async (data) => {
 				if (data.reason === 'loadFailed') {
 					await guildPlayer.textChannel!.send({ content: `Failed to load track: ${data.track.info.title}. Skipping...` });
-					return guildPlayer.skip();
+					guildPlayer.skip();
+					return guildPlayer.play()
 				}
-				return guildPlayer.skip();
+				guildPlayer.skip();
+				return guildPlayer.play()
 			})
 			.on('closed', async () => {
 				await guildPlayer.disconnect();

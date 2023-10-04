@@ -45,7 +45,8 @@ export class DoobiePlayer {
 		for (let i = 0; i < 3; i++) {
 			if (i === 2) {
 				await this.textChannel?.send({ content: 'Failed to play the track. Skipping...' });
-				return this.skip();
+				this.skip();
+				await this.play();
 			}
 
 			try {
@@ -66,25 +67,9 @@ export class DoobiePlayer {
 		return !this.isPlaying;
 	}
 
-	public async skip() {
-		await this.player?.stopTrack();
-		this.queue.shift();
-		if (this.queue.length) {
-			await this.play();
-		} else {
-			await this.textChannel?.send({ content: 'Queue is empty. Disconnecting after 5 minutes of inactivity.' });
-			this.isPlaying = false;
-			setTimeout(
-				async () => {
-					if (!this.queue.length) {
-						await this.textChannel?.send({ content: 'Disconnected due to inactivity.' });
-						await this.disconnect();
-					}
-				},
-				1000 * 60 * 5
-			);
-		}
-		return this.isPlaying;
+	public skip() {
+		if (!this.player) return;
+		else this.queue.shift();
 	}
 
 	public async pause() {
