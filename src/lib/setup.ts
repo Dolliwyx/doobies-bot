@@ -5,7 +5,7 @@ import { ApplicationCommandRegistries, RegisterBehavior, container } from '@sapp
 import '@sapphire/plugin-editable-commands/register';
 import '@sapphire/plugin-logger/register';
 import '@sapphire/plugin-subcommands/register';
-import '@sapphire/plugin-hmr/register';
+// import '@sapphire/plugin-hmr/register';
 import { setup } from '@skyra/env-utilities';
 import * as colorette from 'colorette';
 import { inspect } from 'util';
