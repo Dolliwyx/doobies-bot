@@ -126,6 +126,7 @@ export class UserCommand extends Command {
 					guildPlayer.skip();
 					return guildPlayer.play()
 				}
+				if (data.reason === 'replaced') return;
 				guildPlayer.skip();
 				return guildPlayer.play()
 			})
