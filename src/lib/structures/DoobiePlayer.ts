@@ -43,21 +43,21 @@ export class DoobiePlayer {
 		const [song] = this.queue;
 		if (this.paused) return this.resume();
 		for (let i = 0; i < 3; i++) {
-			if (i === 2) {
-				await this.textChannel?.send({ content: 'Failed to play the track. Skipping...' });
-				this.skip();
-				await this.play();
-			}
-
 			try {
 				await this.player?.playTrack({ track: song.encoded, options: { volume: this.volume } });
+				this.isPlaying = true;
 				break;
 			} catch (error) {
+				if (i === 2) {
+					await this.textChannel?.send({ content: `Failed to play ${song.info.title}. Skipping...` });
+					this.skip();
+					await this.play();
+					break;
+				}
 				container.logger.error(error);
 				continue;
 			}
 		}
-		this.isPlaying = true;
 		return this.isPlaying;
 	}
 
