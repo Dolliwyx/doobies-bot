@@ -78,7 +78,7 @@ export class UserCommand extends Command {
 
 		let track: Track | Playlist;
 
-		switch(res.loadType) {
+		switch (res.loadType) {
 			case LoadType.SEARCH:
 				[track] = res.data;
 				track.requester = interaction.user.id;
@@ -124,11 +124,11 @@ export class UserCommand extends Command {
 				if (data.reason === 'loadFailed') {
 					await guildPlayer.textChannel!.send({ content: `Failed to load track: ${data.track.info.title}. Skipping...` });
 					guildPlayer.skip();
-					return guildPlayer.play()
+					return guildPlayer.play();
 				}
 				if (data.reason === 'replaced') return;
 				guildPlayer.skip();
-				return guildPlayer.play()
+				return guildPlayer.play();
 			})
 			.on('closed', async () => {
 				await guildPlayer.disconnect();

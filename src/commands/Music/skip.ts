@@ -18,7 +18,7 @@ export class UserCommand extends Command {
 
 		guildPlayer.skip();
 
-		await guildPlayer.play()
+		await guildPlayer.play();
 
 		return interaction.reply({ content: 'Skipped the current song.' });
 	}
