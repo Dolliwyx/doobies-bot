@@ -2,7 +2,8 @@
     "extends": [
         "@sapphire/ts-config",
         "@sapphire/ts-config/decorators",
-        "@sapphire/ts-config/verbatim"
+        "@sapphire/ts-config/verbatim",
+        "@sapphire/ts-config/bundler"
     ],
     "compilerOptions": {
         "target": "ESNext",
