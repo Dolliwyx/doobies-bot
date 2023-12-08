@@ -40,7 +40,7 @@ export class UserCommand extends Command {
 		try {
 			new URL(query);
 		} catch (error) {
-			query = `ytmsearch:${query}`;
+			query = `spsearch:${query}`;
 		}
 
 		const node = guildPlayer.getIdealNode();
