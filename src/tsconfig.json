@@ -12,7 +12,8 @@
                 "*"
             ]
         },
-        "composite": true
+        "composite": true,
+        "skipLibCheck": true,
     },
     "include": [
         ".",
