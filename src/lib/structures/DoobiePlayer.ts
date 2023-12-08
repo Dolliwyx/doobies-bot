@@ -97,10 +97,6 @@ export class DoobiePlayer {
 		return this.volume;
 	}
 
-	public getIdealNode() {
-		return this.shoukaku.getIdealNode();
-	}
-
 	public get player() {
 		return this.shoukaku.players.get(this.guild.id) || null;
 	}
