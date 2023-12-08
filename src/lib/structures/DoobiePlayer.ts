@@ -41,6 +41,14 @@ export class DoobiePlayer {
 
 	public async play() {
 		const [song] = this.queue;
+		if (!song) {
+			this.isPlaying = false;
+			await this.textChannel?.send({ content: 'Queue is empty. Leaving voice channel after 5 minutes of inactivity.' });
+			return setTimeout(() => {
+				if (this.queue.length) return;
+				return this.disconnect();
+			}, 300000);
+		}
 		if (this.paused) return this.resume();
 		for (let i = 0; i < 3; i++) {
 			try {
