@@ -43,7 +43,15 @@ export class UserCommand extends Command {
 			query = `spsearch:${query}`;
 		}
 
-		const node = guildPlayer.getIdealNode();
+		const member = interaction.member as GuildMember;
+		if (!member.voice.channelId) return interaction.editReply({ content: 'You must be in a voice channel to use this command.' });
+
+		if (!guildPlayer.player) await this.join(guildPlayer, member.voice.channel!);
+
+		if (member.voice.channelId !== guildPlayer.voiceChannel!.id)
+			return interaction.editReply({ content: 'You must be in the same voice channel to use this command.' });
+
+		const node = guildPlayer.player!.node;
 		if (!node) {
 			this.container.logger.error('No available nodes.');
 			return interaction.editReply({ content: 'No available nodes. Try again later.' });
@@ -63,14 +71,7 @@ export class UserCommand extends Command {
 
 		if (!res || [LoadType.ERROR, LoadType.EMPTY].includes(res.loadType))
 			return interaction.editReply({ content: 'No results were found for your query.' });
-
-		const member = interaction.member as GuildMember;
-		if (!member.voice.channelId) return interaction.editReply({ content: 'You must be in a voice channel to use this command.' });
-
-		if (!guildPlayer.player) await this.join(guildPlayer, member.voice.channel!);
-
-		if (member.voice.channelId !== guildPlayer.voiceChannel!.id)
-			return interaction.editReply({ content: 'You must be in the same voice channel to use this command.' });
+	
 		if (!guildPlayer.textChannel) {
 			guildPlayer.textChannel = interaction.channel as TextChannel | VoiceBasedChannel;
 			await guildPlayer.textChannel.send({ content: `Connected and bound to ${guildPlayer.textChannel}` });
