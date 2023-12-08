@@ -125,18 +125,18 @@ export class UserCommand extends Command {
 				if (data.reason === 'loadFailed') {
 					await guildPlayer.textChannel!.send({ content: `Failed to load track: ${data.track.info.title}. Skipping...` });
 					guildPlayer.skip();
-					return guildPlayer.play();
+					await guildPlayer.play();
 				}
-				if (data.reason === 'replaced') return;
+				if (['stopped', 'replaced'].includes(data.reason)) return;
 				guildPlayer.skip();
-				return guildPlayer.play();
+				await guildPlayer.play();
 			})
 			.on('closed', async () => {
 				await guildPlayer.disconnect();
-				return guildPlayer.textChannel?.send({ content: 'I am disconnected from the voice channel.' });
+				await guildPlayer.textChannel?.send({ content: 'I am disconnected from the voice channel.' });
 			})
 			.on('exception', async (data) => {
-				return guildPlayer.textChannel?.send({
+				await guildPlayer.textChannel?.send({
 					content: `An error occured while playing the track: ${data.exception.message} (TYPE: ${data.type}))`
 				});
 			});
