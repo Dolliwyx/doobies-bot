@@ -1968,7 +1968,7 @@ __metadata:
     keyv: "npm:^4.5.4"
     npm-run-all: "npm:^4.1.5"
     prettier: "npm:^3.1.0"
-    shoukaku: "https://github.com/Dolliwyx/Shoukaku.git#commit=12c5a449ae59cae8fb55d5ee9f2b4afa76bac33d"
+    shoukaku: "https://github.com/Dolliwyx/Shoukaku"
     tsc-watch: "npm:^6.0.4"
     tsup: "npm:^8.0.1"
     typescript: "npm:^5.3.3"
@@ -4643,12 +4643,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"shoukaku@https://github.com/Dolliwyx/Shoukaku.git#commit=12c5a449ae59cae8fb55d5ee9f2b4afa76bac33d":
+"shoukaku@https://github.com/Dolliwyx/Shoukaku":
   version: 4.0.0-dev
-  resolution: "shoukaku@https://github.com/Dolliwyx/Shoukaku.git#commit=12c5a449ae59cae8fb55d5ee9f2b4afa76bac33d"
+  resolution: "shoukaku@https://github.com/Dolliwyx/Shoukaku.git#commit=e68e897720af5059a3ce979e3ef2d9fc28160f40"
   dependencies:
-    ws: "npm:^8.13.0"
-  checksum: 38542d3f904567e4d2043d636d934b862d8fe0179d55935b03ad81682e13b55b811b4ab9d727b629886da59e76cc5f043fe51acf8c4f1159a61b02dcdbdcf9fc
+    ws: "npm:^8.14.2"
+  checksum: 47be754da7627da4443fdc733fe09f472bed14d193f813ac931d8568d40818a4ff615daf65609a280d78767f0ca8ed7fdbebbc03725357ee334f80f1013f99fd
   languageName: node
   linkType: hard
 
@@ -5290,11 +5290,11 @@ __metadata:
 
 "typescript@patch:typescript@npm%3A^5.3.3#optional!builtin<compat/typescript>":
   version: 5.3.3
-  resolution: "typescript@patch:typescript@npm%3A5.3.3#optional!builtin<compat/typescript>::version=5.3.3&hash=29ae49"
+  resolution: "typescript@patch:typescript@npm%3A5.3.3#optional!builtin<compat/typescript>::version=5.3.3&hash=e012d7"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: e22df47df9b2b2f2617b8bf511a29aea3d177f9f7a0756818230a76b01cbd7da988bf55f9463aaa1a4c1ff90b80f8dc5676460d4e9dfc010572cbba59b822b0c
+  checksum: 1d0a5f4ce496c42caa9a30e659c467c5686eae15d54b027ee7866744952547f1be1262f2d40de911618c242b510029d51d43ff605dba8fb740ec85ca2d3f9500
   languageName: node
   linkType: hard
 
@@ -5536,7 +5536,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ws@npm:8.14.2, ws@npm:^8.13.0, ws@npm:^8.14.2":
+"ws@npm:8.14.2, ws@npm:^8.14.2":
   version: 8.14.2
   resolution: "ws@npm:8.14.2"
   peerDependencies:

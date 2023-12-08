@@ -33,7 +33,7 @@
 		"colorette": "^2.0.20",
 		"discord.js": "^14.14.1",
 		"keyv": "^4.5.4",
-		"shoukaku": "https://github.com/Dolliwyx/Shoukaku.git#commit=12c5a449ae59cae8fb55d5ee9f2b4afa76bac33d",
+		"shoukaku": "https://github.com/Dolliwyx/Shoukaku",
 		"undici": "^6.0.1"
 	},
 	"devDependencies": {
