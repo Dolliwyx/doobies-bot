@@ -1,5 +1,8 @@
 import { LogLevel, SapphireClient, container } from '@sapphire/framework';
 import { GatewayIntentBits, Message, Partials } from 'discord.js';
+import { Setting } from './Setting';
+import { rootDir } from '#lib/common/constants';
+import { Guild, User } from '#lib/common/defaultSettings';
 
 export class DoobieClient extends SapphireClient {
 	public constructor() {
@@ -30,21 +33,23 @@ export class DoobieClient extends SapphireClient {
 
 	public override async login(token?: string) {
 		this.logger.info('Readying database...');
-		container.settings.init();
-		container.settings.getDb.on('error', (err) => this.logger.error(`An error occured! ${err}`));
-
+		container.settings = {
+			guilds: new Setting('guilds', 'sqlite', new URL(process.env.DATABASE_URL, rootDir), Guild),
+			users: new Setting('users', 'sqlite', new URL(process.env.DATABASE_URL, rootDir), User)
+		}
 		return super.login(token);
 	}
 
 	public override async destroy() {
 		this.logger.info('Disconnecting from database...');
-		await container.settings._disconnect();
+		await container.settings.users._disconnect();
+		await container.settings.guilds._disconnect();
 
 		return super.destroy();
 	}
 
 	public override fetchPrefix = async (message: Message) => {
-		const guildSettings = await container.settings.getGuildSetting(message.guild!.id);
+		const guildSettings = await container.settings.guilds.get(message.guild!.id);
 		const prefix = guildSettings.prefix ?? this.options.defaultPrefix;
 
 		return prefix as string;
