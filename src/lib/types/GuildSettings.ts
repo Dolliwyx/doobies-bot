@@ -1,16 +1,16 @@
 export interface GuildSettings {
 	prefix: string;
-	welcome: Partial<Welcome>;
-	tags: Partial<Tag[]>;
+	welcome: Welcome;
+	tags: Tag[];
 }
 
-export interface Welcome {
+interface Welcome {
 	enabled: boolean;
 	channelId: string;
 	message: string;
 }
 
-export interface Tag {
+interface Tag {
 	name: string;
 	content: string;
 	author: string;

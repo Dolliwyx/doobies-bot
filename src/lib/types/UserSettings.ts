@@ -1,41 +1,41 @@
-export interface UserSettings {
-	money: Partial<Money>;
-	pet: Partial<Pet>;
-	music: Partial<Music>;
+export type UserSettings = {
+	money: Money;
+	pet: Pet;
+	music: Music;
 }
 
-export interface Money {
+interface Money {
 	balance: number;
 	lastClaimedDaily: number;
 }
 
-export interface Pet {
+interface Pet {
 	name: string;
 	level: number;
 	exp: number;
 	expToNextLevel: number;
-	cosmetics: Partial<Cosmetic>;
+	cosmetics: Cosmetic;
 }
 
-export interface Cosmetic {
-	owned: Partial<OwnedCosmetics>;
-	equipped: Partial<EquippedCosmetics>;
+interface Cosmetic {
+	owned: OwnedCosmetics;
+	equipped: EquippedCosmetics;
 }
 
-export interface OwnedCosmetics {
+interface OwnedCosmetics {
 	hats: string[];
 	eyewears: string[];
 	outfits: string[];
 	sets: string[];
 }
 
-export interface EquippedCosmetics {
+interface EquippedCosmetics {
 	hat: string;
 	eyewear: string;
 	outfit: string;
 	sets: string;
 }
 
-export interface Music {
+interface Music {
 	djs: string[];
 }
