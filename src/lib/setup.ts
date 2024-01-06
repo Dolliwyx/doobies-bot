@@ -9,8 +9,7 @@ import '@sapphire/plugin-subcommands/register';
 import { setup } from '@skyra/env-utilities';
 import * as colorette from 'colorette';
 import { inspect } from 'util';
-import { rootDir, srcDir } from '#lib/common/constants';
-import { Settings } from '#lib/structures/Settings';
+import { srcDir } from '#lib/common/constants';
 import { QueueManager } from '#lib/structures/QueueManager';
 
 // Set default behavior to bulk overwrite
@@ -24,9 +23,6 @@ inspect.defaultOptions.depth = 1;
 
 // Enable colorette
 colorette.createColors({ useColor: true });
-
-// Initialize settings
-container.settings = new Settings(new URL(process.env.DATABASE_URL, rootDir));
 
 // Initialize queue manager
 container.queue = new QueueManager();
