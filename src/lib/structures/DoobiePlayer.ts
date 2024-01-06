@@ -94,7 +94,7 @@ export class DoobiePlayer {
 
 	public async disconnect() {
 		container.queue.delete(this.guild.id);
-		await this.player?.destroyPlayer();
+		await this.player?.destroy();
 		return this.shoukaku.leaveVoiceChannel(this.guild.id);
 	}
 
