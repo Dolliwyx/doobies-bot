@@ -43,7 +43,7 @@ export class UserCommand extends Subcommand {
 		const tagName = interaction.options.getString('name', true);
 		const targetUser = interaction.options.getUser('user');
 
-		const { tags } = await this.container.settings.getGuildSetting(interaction.guildId!);
+		const { tags } = await this.container.settings.guilds.get(interaction.guildId!);
 		if (!tags.length) return interaction.reply({ content: 'There are no tags in this server.', ephemeral: true });
 
 		const tag = tags.find((t) => t?.name === tagName);
@@ -56,7 +56,7 @@ export class UserCommand extends Subcommand {
 	public async interactionInfo(interaction: Subcommand.ChatInputCommandInteraction) {
 		const tagName = interaction.options.getString('name', true);
 
-		const { tags } = await this.container.settings.getGuildSetting(interaction.guildId!);
+		const { tags } = await this.container.settings.guilds.get(interaction.guildId!);
 		if (!tags.length) return interaction.reply({ content: 'There are no tags in this server.', ephemeral: true });
 
 		const tag = tags.find((t) => t?.name === tagName);
@@ -86,12 +86,12 @@ export class UserCommand extends Subcommand {
 		const tagContent = await args.rest('string').catch(() => null);
 		if (!tagContent) return message.reply('You must provide a tag content.');
 
-		const { tags } = await this.container.settings.getGuildSetting(message.guildId!);
+		const { tags } = await this.container.settings.guilds.get(message.guildId!)
 		if (tags.some((t) => t?.name.toLowerCase() === tagName.toLowerCase()))
 			return message.reply(`There is already a tag with the name ${inlineCode(tagName)}`);
 
 		const tag = { name: tagName, content: tagContent, author: message.author.id, createdAt: Date.now(), updatedAt: Date.now() };
-		await this.container.settings.setGuildSetting(message.guildId!, { tags: [...tags, tag] });
+		await this.container.settings.guilds.set(message.guildId!, { tags: [...tags, tag] });
 
 		return message.reply(`Successfully created the tag ${inlineCode(tag.name)}`);
 	}
@@ -100,11 +100,11 @@ export class UserCommand extends Subcommand {
 		const tagName = await args.pick('string').catch(() => null);
 		if (!tagName) return message.reply('You must provide a tag name.');
 
-		const { tags } = await this.container.settings.getGuildSetting(message.guildId!);
+		const { tags } = await this.container.settings.guilds.get(message.guildId!);
 		if (!tags.some((t) => t?.name.toLowerCase() === tagName.toLowerCase()))
 			return message.reply(`There is no tag with the name ${inlineCode(tagName)}`);
 
-		await this.container.settings.setGuildSetting(message.guildId!, {
+		await this.container.settings.guilds.set(message.guildId!, {
 			tags: tags.filter((t) => t?.name.toLowerCase() !== tagName.toLowerCase())
 		});
 
@@ -117,7 +117,7 @@ export class UserCommand extends Subcommand {
 		const tagContent = await args.rest('string').catch(() => null);
 		if (!tagContent) return message.reply('You must provide a tag content.');
 
-		const { tags } = await this.container.settings.getGuildSetting(message.guildId!);
+		const { tags } = await this.container.settings.guilds.get(message.guildId!);
 		if (!tags.some((t) => t?.name.toLowerCase() === tagName.toLowerCase()))
 			return message.reply(`There is no tag with the name ${inlineCode(tagName)}`);
 
@@ -125,7 +125,7 @@ export class UserCommand extends Subcommand {
 		tag.content = tagContent;
 		tag.updatedAt = Date.now();
 
-		await this.container.settings.setGuildSetting(message.guildId!, {
+		await this.container.settings.guilds.set(message.guildId!, {
 			tags: tags.filter((t) => t?.name.toLowerCase() !== tagName.toLowerCase()).concat(tag)
 		});
 
@@ -133,7 +133,7 @@ export class UserCommand extends Subcommand {
 	}
 
 	public override async autocompleteRun(interaction: Subcommand.AutocompleteInteraction) {
-		const { tags } = await this.container.settings.getGuildSetting(interaction.guildId!);
+		const { tags } = await this.container.settings.guilds.get(interaction.guildId!);
 		if (!tags.length) return;
 		const subcommand = interaction.options.getSubcommand(true);
 		const option = interaction.options.getFocused(true);

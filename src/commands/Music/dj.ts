@@ -41,13 +41,13 @@ export class UserCommand extends Subcommand {
 
 		const {
 			music: { djs }
-		} = await this.container.settings.getUserSetting(interaction.user.id);
+		} = await this.container.settings.users.get(interaction.user.id);
 
 		if (djs?.includes(trustedUser.id)) return interaction.reply({ content: 'This user is already in your list.', ephemeral: true });
 
 		djs?.push(trustedUser.id);
 
-		await this.container.settings.setUserSetting(interaction.user.id, { music: { djs } });
+		await this.container.settings.users.set(interaction.user.id, { music: { djs } });
 		return interaction.reply({ content: `Added ${trustedUser} to your DJ list.`, allowedMentions: { parse: [] } });
 	}
 
@@ -55,20 +55,20 @@ export class UserCommand extends Subcommand {
 		const trustedUser = interaction.options.getUser('user', true);
 		const {
 			music: { djs }
-		} = await this.container.settings.getUserSetting(interaction.user.id);
+		} = await this.container.settings.users.get(interaction.user.id);
 
 		if (!djs?.includes(trustedUser.id)) return interaction.reply({ content: 'This user is not in your list.', ephemeral: true });
 
 		const newTrusted = djs.filter((id) => id !== trustedUser.id);
 
-		await this.container.settings.setUserSetting(interaction.user.id, { music: { djs: newTrusted } });
+		await this.container.settings.users.set(interaction.user.id, { music: { djs: newTrusted } });
 		return interaction.reply({ content: `Removed ${trustedUser} from your DJ list.`, allowedMentions: { parse: [] } });
 	}
 
 	public async interactionList(interaction: Subcommand.ChatInputCommandInteraction) {
 		const {
 			music: { djs }
-		} = await this.container.settings.getUserSetting(interaction.user.id);
+		} = await this.container.settings.users.get(interaction.user.id);
 		if (!djs?.length) return interaction.reply({ content: 'You have no DJs.', ephemeral: true });
 		return interaction.reply({
 			embeds: [
@@ -81,7 +81,7 @@ export class UserCommand extends Subcommand {
 	}
 
 	public async interactionClear(interaction: Subcommand.ChatInputCommandInteraction) {
-		await this.container.settings.setUserSetting(interaction.user.id, { music: { djs: [] } });
+		await this.container.settings.users.set(interaction.user.id, { music: { djs: [] } });
 		return interaction.reply({ content: 'Cleared your DJ list.', ephemeral: true });
 	}
 }

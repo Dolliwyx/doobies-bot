@@ -13,7 +13,7 @@ loadFont(new URL('fonts/bubbleboddy.fat.ttf', assetDir).pathname, 'Bubbleboddy F
 })
 export class UserEvent extends Listener {
 	public override async run(member: GuildMember) {
-		const guildSettings = await this.container.settings.getGuildSetting(member.guild.id);
+		const guildSettings = await this.container.settings.guilds.get(member.guild.id);
 		if (!(guildSettings.welcome?.enabled && guildSettings.welcome?.channelId)) return;
 		const width = 800,
 			height = 500,

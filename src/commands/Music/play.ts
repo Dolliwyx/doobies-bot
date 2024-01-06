@@ -27,7 +27,7 @@ export class UserCommand extends Command {
 
 		const {
 			music: { djs }
-		} = await this.container.settings.getUserSetting(guildPlayer.owner);
+		} = await this.container.settings.users.get(guildPlayer.owner);
 
 		if (guildPlayer.owner !== interaction.user.id && !djs?.includes(interaction.user.id))
 			return interaction.editReply({

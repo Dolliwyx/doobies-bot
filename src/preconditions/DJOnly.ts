@@ -7,7 +7,7 @@ export class UserPrecondition extends Precondition {
 		if (!guildPlayer) return this.ok();
 		const {
 			music: { djs }
-		} = await this.container.settings.getUserSetting(guildPlayer.owner);
+		} = await this.container.settings.users.get(guildPlayer.owner);
 
 		if (guildPlayer.owner !== interaction.user.id && !djs?.includes(interaction.user.id)) {
 			return this.error({
@@ -25,7 +25,7 @@ export class UserPrecondition extends Precondition {
 		if (!guildPlayer) return this.ok();
 		const {
 			music: { djs }
-		} = await this.container.settings.getUserSetting(guildPlayer.owner);
+		} = await this.container.settings.users.get(guildPlayer.owner);
 
 		if (guildPlayer.owner !== message.author.id && !djs?.includes(message.author.id)) {
 			return this.error({
