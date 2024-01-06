@@ -1,6 +1,6 @@
 import type { UserSettings, GuildSettings } from '#lib/types/index';
 
-export const defaultUserSettings: UserSettings = {
+export const User: UserSettings = {
 	money: {
 		balance: 0,
 		lastClaimedDaily: 0
@@ -30,7 +30,7 @@ export const defaultUserSettings: UserSettings = {
 	}
 };
 
-export const defaultGuildSettings: GuildSettings = {
+export const Guild: GuildSettings = {
 	prefix: '!!',
 	welcome: {
 		enabled: false,
