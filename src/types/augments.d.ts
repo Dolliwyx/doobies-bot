@@ -1,7 +1,9 @@
 import type { ArrayString } from '@skyra/env-utilities';
-import type { Settings } from '#lib/structures/Settings';
+import type { Setting } from '#lib/structures/Setting';
 import type { Shoukaku } from 'shoukaku';
 import type { QueueManager } from '#lib/structures/QueueManager';
+import type { UserSettings } from '#lib/types/UserSettings';
+import type { GuildSettings } from '#lib/types/GuildSettings';
 
 declare module '@skyra/env-utilities' {
 	interface Env {
@@ -28,7 +30,10 @@ declare module 'shoukaku' {
 
 declare module '@sapphire/pieces' {
 	interface Container {
-		settings: Settings;
+		settings: {
+			users: Setting<UserSettings>;
+			guilds: Setting<GuildSettings>;
+		};
 		shoukaku: Shoukaku;
 		queue: QueueManager;
 	}
